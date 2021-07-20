@@ -17,7 +17,6 @@ class AuthController {
       console.log("LogIn Attempt: " + email);
       const player = await Player.findOne({
         where: { email: email },
-        attributes: { exclude: ["password"] },
       });
       console.log(player);
       if (!player) {
