@@ -27,7 +27,7 @@ class AuthController {
           data: null,
         });
       }
-      if (!(await bcrypt.compare(req.body.password, player.password))) {
+      if (!(await bcrypt.compare(password, player.password))) {
         console.error("password error");
         return res.status(400).json({
           message: "Ops! Dados incorretos ou jogador inexistente.",

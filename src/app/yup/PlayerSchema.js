@@ -30,7 +30,7 @@ const PlayerSchema = yup.object().shape({
   country: yup.string().required("O País é requerido"),
   provincy: yup.string().required("O Estado é requerido"),
   city: yup.string().required("A Cidade é requerida"),
-  adress: yup.string().required("O Endereço é requerido"),
+  address: yup.string().required("O Endereço é requerido"),
 });
 
 module.exports = PlayerSchema;
