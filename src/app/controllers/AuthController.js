@@ -1,4 +1,4 @@
-const Player = require("../Models/Player");
+const Player = require("../models/Player");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth");
@@ -7,42 +7,47 @@ const AuthSchema = require("../yup/AuthSchema");
 class AuthController {
   async playerLogIn(req, res) {
     try {
-      console.warn(req.body);
-      const player = await Player.findAll({ order: [["id", "DESC"]] });
-
-      console.log(player);
-      /*  if (!(await AuthSchema.isValid(req.body))) {
+      if (!(await AuthSchema.isValid(req.body))) {
         return res.status(400).json({
           message: "Dados inválidos",
+          data: null,
         });
       }
       const { email, password } = req.body;
-      console.log("LogIn Attempt: " + email); */
-      /* const playerExist = await Player.findByPk(6);
-      console.log(playerExist); */
-      /* if (!playerExist) {
-        console.error("user not exists");
+      console.log("LogIn Attempt: " + email);
+      const player = await Player.findOne({
+        where: { email: email },
+        attributes: { exclude: ["password"] },
+      });
+      console.log(player);
+      if (!player) {
+        console.error("player not exists");
         return res.status(400).json({
-          message: "Ops! Dados incorretos ou usuário inexistente.",
+          message: "Ops! Dados incorretos ou jogador inexistente.",
+          data: null,
         });
       }
-      if (!(await bcrypt.compare(req.body.password, playerExist.password))) {
-        console.error("Password error");
+      if (!(await bcrypt.compare(req.body.password, player.password))) {
+        console.error("password error");
         return res.status(400).json({
-          message: "Ops! Dados incorretos ou usuário inexistente.",
+          message: "Ops! Dados incorretos ou jogador inexistente.",
+          data: null,
         });
       }
-      console.log("aqui");
       return res.status(200).json({
-        player: playerExist,
-        token: jwt.sign({ id: playerExist.id }, config.secret, {
-          expiresIn: config.expireIn,
-        }),
-      }); */
+        message: "success",
+        data: {
+          player: player,
+          token: jwt.sign({ id: player.id }, config.secret, {
+            expiresIn: config.expireIn,
+          }),
+        },
+      });
     } catch (error) {
       console.error(error);
       return res.status(400).json({
         message: "Ops! Falha ao validar seus dados",
+        error: error,
       });
     }
   }
