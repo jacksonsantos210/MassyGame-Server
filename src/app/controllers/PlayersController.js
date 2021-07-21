@@ -12,12 +12,11 @@ class PlayersController {
       });
       return res.status(200).json({
         message: "success",
-        data: { players: players },
+        players: players,
       });
     } catch (error) {
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
-        data: { error: e },
       });
     }
   }
@@ -25,7 +24,7 @@ class PlayersController {
   async show(req, res) {
     try {
       let result = {};
-      const { id } = req.Params;
+      const { id } = req.params;
       const player = await Player.findOne({
         where: { id: id },
         attributes: { exclude: ["password"] },
@@ -33,47 +32,17 @@ class PlayersController {
       if (player) {
         result = {
           message: "success",
-          data: { player: player },
+          player: player,
         };
       } else {
         result = {
           message: "not found",
-          data: { player: null },
         };
       }
       return res.status(200).json(result);
     } catch (error) {
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
-        data: { error: e },
-      });
-    }
-  }
-
-  async find(req, res) {
-    try {
-      let result = {};
-      const { field, filter } = req.body;
-      const player = await Player.findOne({
-        where: { field: filter },
-        attributes: { exclude: ["password"] },
-      });
-      if (player) {
-        result = {
-          message: "success",
-          data: { player: player },
-        };
-      } else {
-        result = {
-          message: "not found",
-          data: { player: null },
-        };
-      }
-      return res.status(200).json(result);
-    } catch (error) {
-      return res.status(400).json({
-        message: "Erro ao tentar listar jogadores",
-        data: { error: e },
       });
     }
   }
@@ -90,19 +59,15 @@ class PlayersController {
       req.body.password = undefined;
       return res.status(200).json({
         message: "Jogador Cadastrado com sucesso",
-        data: {
-          player: player,
-          token: jwt.sign({ id: player.id }, config.secret, {
-            expiresIn: config.expireIn,
-          }),
-        },
+
+        player: player,
+        token: jwt.sign({ id: player.id }, config.secret, {
+          expiresIn: config.expireIn,
+        }),
       });
     } catch (e) {
       return res.status(400).json({
         message: "Erro ao tentar inserir jogador",
-        data: {
-          error: e.error,
-        },
       });
     }
   }
@@ -120,16 +85,12 @@ class PlayersController {
 
       return res.status(200).json({
         message: "Dados atualizados com sucesso",
-        data: {
-          player: player,
-        },
+
+        player: player,
       });
     } catch (e) {
       return res.status(400).json({
         message: "Erro ao tentar atualizar jogador",
-        data: {
-          error: e.error,
-        },
       });
     }
   }

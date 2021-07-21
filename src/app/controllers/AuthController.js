@@ -9,8 +9,7 @@ class AuthController {
     try {
       if (!(await AuthSchema.isValid(req.body))) {
         return res.status(400).json({
-          message: "Dados inválidos",
-          data: null,
+          message: "Ops! Dados Inválidos.",
         });
       }
       const { email, password } = req.body;
@@ -23,30 +22,24 @@ class AuthController {
         console.error("player not exists");
         return res.status(400).json({
           message: "Ops! Dados incorretos ou jogador inexistente.",
-          data: null,
         });
       }
       if (!(await bcrypt.compare(password, player.password))) {
         console.error("password error");
         return res.status(400).json({
           message: "Ops! Dados incorretos ou jogador inexistente.",
-          data: null,
         });
       }
       return res.status(200).json({
-        message: "success",
-        data: {
-          player: player,
-          token: jwt.sign({ id: player.id }, config.secret, {
-            expiresIn: config.expireIn,
-          }),
-        },
+        player: player,
+        token: jwt.sign({ id: player.id }, config.secret, {
+          expiresIn: config.expireIn,
+        }),
       });
     } catch (error) {
       console.error(error);
       return res.status(400).json({
         message: "Ops! Falha ao validar seus dados",
-        error: error,
       });
     }
   }

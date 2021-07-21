@@ -1,16 +1,18 @@
-const Figure = require("../models/Figure");
-const FigureSchema = require("../yup/FigureSchema");
+const Album = require("../models/Album");
+const AlbumSchema = require("../yup/AlbumSchema");
 
-class FiguresController {
+class AlbunsController {
   async index(req, res) {
     try {
-      const figures = await Figure.findAll();
+      const albuns = await Album.findAll();
       return res.status(200).json({
-        figures: figures,
+        albuns: albuns,
       });
     } catch (error) {
+      console.error(error);
       return res.status(400).json({
-        message: "Erro ao tentar listar figurinhas",
+        message: "Erro ao tentar listar albuns",
+        data: { error: error },
       });
     }
   }
@@ -27,7 +29,7 @@ class FiguresController {
     }
   } */
 
-  async store(req, res) {
+  /* async store(req, res) {
     try {
       if (!(await FigureSchema)) {
         return res.status(400).json({
@@ -37,16 +39,20 @@ class FiguresController {
       const figure = await Figure.create(req.body);
       return res.status(200).json({
         message: "Figurinha Cadastrado com sucesso",
-
-        figure: figure,
+        data: {
+          figure: figure,
+        },
       });
     } catch (e) {
       console.error(e);
       return res.status(400).json({
         message: "Erro ao tentar inserir figurinha",
+        data: {
+          error: e.error,
+        },
       });
     }
-  }
+  }*/
 }
 
-module.exports = new FiguresController();
+module.exports = new AlbunsController();
