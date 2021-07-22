@@ -1,14 +1,14 @@
+const Logs = require("./LogsController");
 const Album = require("../models/Album");
 const AlbumSchema = require("../yup/AlbumSchema");
 
 class AlbunsController {
   async index(req, res) {
-    console.log("request index on AlbunsController");
     try {
-      const albuns = await Album.findAll({});
-      console.log(albuns);
+      //Logs.save("login_success", `player: ${req.body.email}`, "player");
+      const albums = await Album.findAll();
       return res.status(200).json({
-        albuns: albuns,
+        albums: albums,
       });
     } catch (error) {
       console.error(error);
@@ -17,43 +17,82 @@ class AlbunsController {
       });
     }
   }
-  /* 
+
   async show(req, res) {
     try {
-      const figure = await Figure.findById(req.params.id);
-      res.status(200).json(figure);
+      const album = await Album.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      return res.status(200).json({
+        album: album,
+      });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: "Falha ao carregar a figurinha",
+      console.error(error);
+      return res.status(400).json({
+        message: "Erro ao tentar carregar album",
       });
     }
-  } */
+  }
 
-  /* async store(req, res) {
+  async findByPlayer(req, res) {
     try {
-      if (!(await FigureSchema)) {
+      const albums = await Album.findAll({
+        where: {
+          player_id: req.params.id,
+        },
+      });
+      return res.status(200).json({
+        albums: albums,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        message: "Erro ao tentar carregar figurinhas do jogador",
+      });
+    }
+  }
+
+  async store(req, res) {
+    try {
+      if (!(await AlbumSchema)) {
         return res.status(400).json({
           message: "Dados inválidos",
         });
       }
-      const figure = await Figure.create(req.body);
+      const album = await Album.create(req.body);
       return res.status(200).json({
-        message: "Figurinha Cadastrado com sucesso",
-        data: {
-          figure: figure,
-        },
+        message: "Figurinha salva com sucesso",
+        album: album,
       });
     } catch (e) {
       console.error(e);
       return res.status(400).json({
-        message: "Erro ao tentar inserir figurinha",
-        data: {
-          error: e.error,
-        },
+        message: "Erro ao tentar salvar figurinha",
       });
     }
-  }*/
+  }
+
+  async update(req, res) {
+    try {
+      if (!(await AlbumSchema)) {
+        return res.status(400).json({
+          message: "Dados inválidos",
+        });
+      }
+      const album = await Album.update(req.body);
+      return res.status(200).json({
+        message: "Figurinha salva com sucesso",
+        album: album,
+      });
+    } catch (e) {
+      console.error(e);
+      return res.status(400).json({
+        message: "Erro ao tentar salvar figurinha",
+      });
+    }
+  }
 }
 
 module.exports = new AlbunsController();
