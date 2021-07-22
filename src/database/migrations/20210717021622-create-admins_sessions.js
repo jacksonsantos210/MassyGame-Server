@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      player_id: {
+      admin_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "admins", key: "id" },
@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      ip_adress: {
+      ip_address: {
         type: Sequelize.STRING,
         allowNull: true,
       },
