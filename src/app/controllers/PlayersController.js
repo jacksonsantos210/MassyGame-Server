@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth");
+const Album = require("../models/Album");
 const Player = require("../models/Player");
 const PlayerSchema = require("../yup/PlayerSchema");
 
@@ -15,6 +16,7 @@ class PlayersController {
         players: players,
       });
     } catch (error) {
+      console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
       });
@@ -27,6 +29,7 @@ class PlayersController {
       const { id } = req.params;
       const player = await Player.findOne({
         where: { id: id },
+        include: [{ model: Album }],
         attributes: { exclude: ["password"] },
       });
       if (player) {
@@ -41,6 +44,7 @@ class PlayersController {
       }
       return res.status(200).json(result);
     } catch (error) {
+      console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
       });
@@ -65,7 +69,8 @@ class PlayersController {
           expiresIn: config.expireIn,
         }),
       });
-    } catch (e) {
+    } catch (error) {
+      console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar inserir jogador",
       });
@@ -88,7 +93,8 @@ class PlayersController {
 
         player: player,
       });
-    } catch (e) {
+    } catch (error) {
+      console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar atualizar jogador",
       });
