@@ -5,8 +5,9 @@ const PlayersController = require("./app/controllers/PlayersController");
 const FiguresController = require("./app/controllers/FiguresController");
 const AlbunsController = require("./app/controllers/AlbunsController");
 
-const routes = new Router()
+const routes = new Router();
 console.log("APP -> Load routes");
+/* Auth */
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
 //routes.post("/auth/developer", AuthController.developerLogIn);
@@ -23,13 +24,14 @@ routes.get("/figures", AuthMidleware, FiguresController.index);
 routes.post("/figures/create", AuthMidleware, FiguresController.store);
 //routes.put("/figures/:id",AuthMidleware,  FiguresController.update);
 //routes.delete("/figure/:id",AuthMidleware,  FiguresController.delete);
-//routes.get("/figures/promo/:id");
+routes.get("/figures/premier", AuthMidleware, FiguresController.getPremier);
 
 /* Albuns */
-routes.get("/albuns", AuthMidleware, AlbunsController.index);
-//routes.get("/albuns/:id", AuthMidleware, FiguresController.show);
-//routes.post("/albuns/create", AuthMidleware, FiguresController.store);
-//routes.put("/albuns/:id",AuthMidleware,  FiguresController.update);
-//routes.delete("/albuns/:id",AuthMidleware,  FiguresController.delete);
+routes.get("/albums", AuthMidleware, AlbunsController.index);
+routes.get("/albums/show/:id", AuthMidleware, AlbunsController.show);
+routes.get("/albums/player/:id", AuthMidleware, AlbunsController.findByPlayer);
+routes.post("/albums/create", AuthMidleware, AlbunsController.store);
+//routes.put("/albums/update/:id",AuthMidleware,  AlbunsController.update);
+//routes.delete("/albums/delete:id",AuthMidleware,  AlbunsController.delete);
 
 module.exports = routes;
