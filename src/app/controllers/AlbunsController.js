@@ -1,6 +1,7 @@
 const Logs = require("./LogsController");
 const Album = require("../models/Album");
 const AlbumSchema = require("../yup/AlbumSchema");
+const Player = require("../models/Player");
 
 class AlbunsController {
   async index(req, res) {
@@ -42,6 +43,7 @@ class AlbunsController {
         where: {
           player_id: req.params.id,
         },
+        include: [{ model: Player }],
       });
       return res.status(200).json({
         albums: albums,
