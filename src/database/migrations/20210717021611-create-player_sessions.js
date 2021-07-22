@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      ip_adress: {
+      ip_address: {
         type: Sequelize.STRING,
         allowNull: true,
       },
