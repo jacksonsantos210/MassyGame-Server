@@ -2,6 +2,7 @@ const { Model, DataTypes } = require("sequelize");
 
 class Player extends Model {
   static init(sequelize) {
+    console.log("APP-> Model: Player, has been initialized");
     super.init(
       {
         name: DataTypes.STRING,

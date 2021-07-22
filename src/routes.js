@@ -1,13 +1,12 @@
 const { Router } = require("express");
-
 const AuthMidleware = require("./app/Midlewares/AuthMidleware");
 const AuthController = require("./app/controllers/AuthController");
 const PlayersController = require("./app/controllers/PlayersController");
 const FiguresController = require("./app/controllers/FiguresController");
 const AlbunsController = require("./app/controllers/AlbunsController");
 
-const routes = new Router();
-
+const routes = new Router()
+console.log("APP -> Load routes");
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
 //routes.post("/auth/developer", AuthController.developerLogIn);

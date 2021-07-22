@@ -3,8 +3,10 @@ const AlbumSchema = require("../yup/AlbumSchema");
 
 class AlbunsController {
   async index(req, res) {
+    console.log("request index on AlbunsController");
     try {
-      const albuns = await Album.findAll();
+      const albuns = await Album.findAll({});
+      console.log(albuns);
       return res.status(200).json({
         albuns: albuns,
       });
@@ -12,7 +14,6 @@ class AlbunsController {
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar listar albuns",
-        data: { error: error },
       });
     }
   }

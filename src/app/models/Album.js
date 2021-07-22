@@ -2,6 +2,7 @@ const { Model, DataTypes } = require("sequelize");
 
 class Album extends Model {
   static init(sequelize) {
+    console.log("APP-> Model: Album, has been initialized");
     super.init(
       {
         player_id: DataTypes.INTEGER,
