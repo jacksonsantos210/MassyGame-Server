@@ -1,9 +1,10 @@
+require("dotenv/config");
 module.exports = {
-  dialect: "mysql",
-  host: "31.220.104.197",
-  username: "u231026870_mastermassey",
-  password: "s2N#C]aZN",
-  database: "u231026870_gamemassey",
+  dialect: process.env.DB_DIALECT || "mysql",
+  host: process.env.DB_HOST || "localhost",
+  username: process.env.DB_USERNAME || "root",
+  password: process.env.DB_PASSWORD || "DEV1@jssolucoes",
+  database: process.env.DB_DATABASE || "masseygame_dev",
   define: {
     timestamps: true,
     underscored: true,
