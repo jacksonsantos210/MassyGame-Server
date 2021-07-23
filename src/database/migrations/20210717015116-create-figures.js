@@ -22,10 +22,13 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
-      especial: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
+      type: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+        references: { model: "figures_types", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       image: {
         type: Sequelize.TEXT,
