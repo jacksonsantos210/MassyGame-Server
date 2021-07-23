@@ -11,11 +11,9 @@ class PlayersController {
         attributes: { exclude: ["password"] },
       });
       return res.status(200).json({
-        message: "success",
         players: players,
       });
     } catch (error) {
-      console.log("++++++++++++++ ERRO ++++++++++++++");
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
@@ -33,7 +31,6 @@ class PlayersController {
       });
       if (player) {
         result = {
-          message: "success",
           player: player,
         };
       } else {
