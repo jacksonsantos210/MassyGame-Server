@@ -8,7 +8,7 @@ class Figure extends Model {
         name: DataTypes.STRING,
         description: DataTypes.STRING,
         coin: DataTypes.INTEGER,
-        especial: DataTypes.BOOLEAN,
+        type: DataTypes.INTEGER,
         image: DataTypes.STRING,
       },
       {
