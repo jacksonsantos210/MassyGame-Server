@@ -4,12 +4,13 @@ const AuthController = require("./app/controllers/AuthController");
 const PlayersController = require("./app/controllers/PlayersController");
 const FiguresController = require("./app/controllers/FiguresController");
 const AlbunsController = require("./app/controllers/AlbunsController");
+const FiguresTypesController = require("./app/controllers/FiguresTypesController");
 
 const routes = new Router();
 console.log("APP -> Load routes");
-routes.get('/', function(req,res){
-  return 'Welcome, this is a Massey Game Server'
-})
+routes.get("/", function (req, res) {
+  return "Welcome, this is a Massey Game Server";
+});
 /* Auth */
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
@@ -20,6 +21,20 @@ routes.get("/players", AuthMidleware, PlayersController.index);
 routes.get("/players/show/:id", AuthMidleware, PlayersController.show);
 routes.post("/players/register", PlayersController.store); //Função Pública de Registro
 routes.post("/players/update", AuthMidleware, PlayersController.update);
+/* Albuns */
+routes.get("/figures-types", AuthMidleware, FiguresTypesController.index);
+routes.get(
+  "/figures-types/show/:id",
+  AuthMidleware,
+  FiguresTypesController.show
+);
+routes.post(
+  "/figures-types/create",
+  AuthMidleware,
+  FiguresTypesController.store
+);
+//routes.put("/figures-types/update/:id",AuthMidleware,  AlbunsController.update);
+//routes.delete("/figures-types/delete:id",AuthMidleware,  AlbunsController.delete);
 
 /* Figures */
 routes.get("/figures", AuthMidleware, FiguresController.index);
