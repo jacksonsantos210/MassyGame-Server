@@ -7,6 +7,9 @@ const AlbunsController = require("./app/controllers/AlbunsController");
 
 const routes = new Router();
 console.log("APP -> Load routes");
+routes.get('/', function(req,res){
+  return 'Welcome, this is a Massey Game Server'
+})
 /* Auth */
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
