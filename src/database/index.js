@@ -18,6 +18,7 @@ const connection = new Sequelize(dbConfig);
 Admin.init(connection);
 AdminsSession.init(connection);
 Album.init(connection);
+
 Developer.init(connection);
 DevelopersSession.init(connection);
 Figure.init(connection);
@@ -26,5 +27,10 @@ Player.init(connection);
 PlayersSession.init(connection);
 Premier.init(connection);
 Rank.init(connection);
+//Associates
+/* Album.associateFigure(Figure);
+Album.associatePlayer(Player);
+Figure.associateAlbum(Album);
+Player.associateAlbum(Player); */
 
 module.exports = connection;
