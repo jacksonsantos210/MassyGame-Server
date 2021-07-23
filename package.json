@@ -1,7 +1,8 @@
 {
   "name": "masseygame",
   "version": "1.0.0",
-  "description": "Servidor de Game - ValtraGame",
+  "author": "JS Soluções e Serviços",
+  "description": "Game Server on Massey Colecionaveis",
   "license": "MIT",
   "scripts": {
     "start": "node src/server.js",
@@ -21,5 +22,8 @@
   "devDependencies": {
     "nodemon": "^2.0.7",
     "sequelize-cli": "^6.2.0"
-  }
+  },
+  "engines": {
+    "node": "14.x"
+  },
 }
