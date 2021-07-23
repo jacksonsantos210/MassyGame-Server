@@ -1,4 +1,6 @@
-node_modules
+/node_modules
 .Procfile
-src/config/database.js
+npm-degub.log
+.DS_Store
+/*.env
 yarn.lock
