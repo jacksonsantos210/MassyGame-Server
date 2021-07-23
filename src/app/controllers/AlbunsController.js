@@ -43,7 +43,6 @@ class AlbunsController {
         where: {
           player_id: req.params.id,
         },
-        include: [{ model: Player }],
       });
       return res.status(200).json({
         albums: albums,
