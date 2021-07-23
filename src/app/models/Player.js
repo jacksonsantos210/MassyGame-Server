@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
+/* const Album = require("./Album"); */
 
 class Player extends Model {
   static init(sequelize) {
@@ -25,6 +26,10 @@ class Player extends Model {
       }
     );
   }
+  /* 
+  static associateAlbum(model) {
+    this.hasMany(model, { foreingKey: "players_id", as: "players" });
+  } */
 }
 
 module.exports = Player;
