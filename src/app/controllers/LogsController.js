@@ -9,3 +9,4 @@ class LogsController {
     });
   }
 }
+module.exports = new LogsController();
