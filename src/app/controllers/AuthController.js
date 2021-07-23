@@ -23,6 +23,8 @@ class AuthController {
       const player = await Player.findOne({
         where: { email: email },
       });
+      console.clear();
+      console.log(player);
       if (!player) {
         /*  Logs.save(
           "login_error",
@@ -30,7 +32,7 @@ class AuthController {
           "player"
         ); */
         return res.status(400).json({
-          message: "Ops! Dados incorretos ou jogador inexistente.",
+          message: "Ops! Dados incorretos ou jogador inexistente.  001",
         });
       }
       if (!(await bcrypt.compare(password, player.password))) {
@@ -40,12 +42,13 @@ class AuthController {
           "player"
         ); */
         return res.status(400).json({
-          message: "Ops! Dados incorretos ou jogador inexistente.",
+          message: "Ops! Dados incorretos ou jogador inexistente.  002",
         });
       }
       /* Logs.save("login_success", `player: ${req.body.email}`, "player");
       Logs.save("register_session", `create session to player : ${player.id}`, 'player');
      await PlayersSession.create();  */
+
       return res.status(200).json({
         player: player,
         token: jwt.sign({ id: player.id }, config.secret, {
@@ -53,6 +56,7 @@ class AuthController {
         }),
       });
     } catch (error) {
+      console.log("================= ERRO =================");
       console.error(error);
       return res.status(400).json({
         message: "Ops! Falha ao validar seus dados",
