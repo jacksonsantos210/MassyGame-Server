@@ -1,3 +1,4 @@
+console.clear();
 console.log("Start APP Server");
 require("dotenv/config");
 const app = require("./app");
