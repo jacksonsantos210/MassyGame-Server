@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth");
-const Album = require("../models/Album");
 const Player = require("../models/Player");
 const PlayerSchema = require("../yup/PlayerSchema");
 
@@ -16,6 +15,7 @@ class PlayersController {
         players: players,
       });
     } catch (error) {
+      console.log("++++++++++++++ ERRO ++++++++++++++");
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
@@ -29,7 +29,6 @@ class PlayersController {
       const { id } = req.params;
       const player = await Player.findOne({
         where: { id: id },
-        include: [{ model: Album }],
         attributes: { exclude: ["password"] },
       });
       if (player) {
