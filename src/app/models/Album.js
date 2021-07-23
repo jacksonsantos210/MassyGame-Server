@@ -1,4 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
+/* const Figure = require("./Figure");
+const Player = require("./Player"); */
 
 class Album extends Model {
   static init(sequelize) {
@@ -16,7 +18,17 @@ class Album extends Model {
         sequelize,
       }
     );
+
+    //;
   }
+  /* 
+  static associateFigure(model) {
+    this.belongsTo(model, { foreingKey: "figures_id", as: "figures" });
+  }
+
+  static associatePlayer(model) {
+    this.belongsTo(model, { foreingKey: "players_id", as: "players" });
+  } */
 }
 
 module.exports = Album;
