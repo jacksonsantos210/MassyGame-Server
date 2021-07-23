@@ -12,15 +12,16 @@ const Player = require("../app/models/Player");
 const PlayersSession = require("../app/models/PlayersSession");
 const Premier = require("../app/models/Premier");
 const Rank = require("../app/models/Rank");
+const FiguresType = require("../app/models/FiguresType");
 
 //start connection
 const connection = new Sequelize(dbConfig);
 Admin.init(connection);
 AdminsSession.init(connection);
 Album.init(connection);
-
 Developer.init(connection);
 DevelopersSession.init(connection);
+FiguresType.init(connection);
 Figure.init(connection);
 Log.init(connection);
 Player.init(connection);
