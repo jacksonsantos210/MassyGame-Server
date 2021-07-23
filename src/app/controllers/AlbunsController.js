@@ -39,13 +39,25 @@ class AlbunsController {
 
   async findByPlayer(req, res) {
     try {
-      const albums = await Album.findAll({
-        where: {
-          player_id: req.params.id,
-        },
+      const albumsPasted = await Album.findAll({
+        where: [
+          { player_id: req.params.id },
+          { pasted: true },
+          { sale: false },
+          { sold: false },
+        ],
+      });
+      const albumsUnPasted = await Album.findAll({
+        where: [
+          { player_id: req.params.id },
+          { pasted: false },
+          { sale: false },
+          { sold: false },
+        ],
       });
       return res.status(200).json({
-        albums: albums,
+        pasted: albumsPasted,
+        unpasted: albumsUnPasted,
       });
     } catch (error) {
       console.error(error);
