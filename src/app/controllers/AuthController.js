@@ -14,50 +14,61 @@ class AuthController {
   async playerLogIn(req, res) {
     try {
       if (!(await AuthSchema.isValid(req.body))) {
+        await Logs.save("validate-invalid", `login atempt: ${email}`, "player");
         return res.status(400).json({
           message: "Ops! Dados Inválidos.",
         });
       }
       const { email, password } = req.body;
-      //Logs.save("login_Attempt", `login atempt: ${email}`, "player");
+      await Logs.save("login_attempt", `login atempt: ${email}`, "player");
       const player = await Player.findOne({
         where: { email: email },
       });
-      console.clear();
-      console.log(player);
       if (!player) {
-        /*  Logs.save(
+        await Logs.save(
           "login_error",
           `player: ${req.body.email} not found`,
           "player"
-        ); */
+        );
         return res.status(400).json({
           message: "Ops! Dados incorretos ou jogador inexistente.  001",
         });
       }
       if (!(await bcrypt.compare(password, player.password))) {
-        /* Logs.save(
+        await Logs.save(
           "login_error",
           `player: ${req.body.email} password error`,
           "player"
-        ); */
+        );
         return res.status(400).json({
           message: "Ops! Dados incorretos ou jogador inexistente.  002",
         });
       }
-      /* Logs.save("login_success", `player: ${req.body.email}`, "player");
-      Logs.save("register_session", `create session to player : ${player.id}`, 'player');
-     await PlayersSession.create();  */
-
+      await Logs.save("login_success", `player: ${req.body.email}`, "player");
+      const token = jwt.sign({ id: player.id }, config.secret, {
+        expiresIn: config.expireIn,
+      });
+      await Logs.save(
+        "register_session",
+        `create session to player : ${player.id}`,
+        "player"
+      );
+      await PlayersSession.create({
+        player_id: player.id,
+        token: token,
+        ip_address: "",
+        user_agent: "",
+        payload: "",
+        logged: true,
+      });
+      player.password = undefined;
       return res.status(200).json({
         player: player,
-        token: jwt.sign({ id: player.id }, config.secret, {
-          expiresIn: config.expireIn,
-        }),
+        token: token,
       });
     } catch (error) {
-      console.log("================= ERRO =================");
       console.error(error);
+      await Logs.save("login_fail", `player: ${req.body.email}`, "player");
       return res.status(400).json({
         message: "Ops! Falha ao validar seus dados",
       });
@@ -67,7 +78,7 @@ class AuthController {
   async logout(req, res) {
     try {
       const { type, id } = req.params;
-      Logs.save(
+      await Logs.save(
         "unregister_Session",
         `update session to ${type} : ${id}`,
         type
