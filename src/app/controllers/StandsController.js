@@ -1,19 +1,24 @@
 const Logs = require("./LogsController");
-const Stand = require("../models/Album");
+const Stand = require("../models/Stand");
 const AlbumSchema = require("../yup/AlbumSchema");
 const Player = require("../models/Player");
+const Album = require("../models/Album");
+
+const { Op } = import("sequelize");
 
 class StandsController {
   async index(req, res) {
     try {
-      await Logs.save("read_table", `Stands all`, "player");
-      const stands = await Stand.findAll();
+      //await Logs.save("read_table", `Stands all`, "player");
+      const stands = await Stand.findAll({
+        include: { association: "album" },
+      });
       return res.status(200).json({
         stands: stands,
       });
     } catch (error) {
       console.error(error);
-      await Logs.save("error", `StandsController.index: ${error}`, "server");
+      //await Logs.save("error", `StandsController.index: ${error}`, "server");
       return res.status(400).json({
         message: "Erro ao tentar listar stands",
       });
@@ -23,11 +28,11 @@ class StandsController {
   async show(req, res) {
     try {
       await Logs.save("read_table", `Stands by player:`, "player");
-      const album = await Album.findOne({
+      const stand = await Stand.findOne({
         where: {
           id: req.params.id,
         },
-        include: [{ association: "figure" }],
+        include: { association: "album" },
       });
       return res.status(200).json({
         album: album,
@@ -42,16 +47,11 @@ class StandsController {
 
   async findByPlayer(req, res) {
     try {
-      const albumsPasted = await Album.findAll({
-        where: [
-          { player_id: req.params.id },
-          { pasted: true },
-          { sale: false },
-          { sold: false },
-        ],
-        include: { association: "figure" },
+      const sales = await Stand.findAll({
+        where: { sold: false },
+        include: { association: "album" },
       });
-      const albumsUnPasted = await Album.findAll({
+      const hand = await Album.findAll({
         where: [
           { player_id: req.params.id },
           { pasted: false },
@@ -61,8 +61,8 @@ class StandsController {
         include: { association: "figure" },
       });
       return res.status(200).json({
-        pasted: albumsPasted,
-        unpasted: albumsUnPasted,
+        sales: sales,
+        hand: hand,
       });
     } catch (error) {
       console.error(error);
@@ -74,15 +74,19 @@ class StandsController {
 
   async store(req, res) {
     try {
-      if (!(await AlbumSchema)) {
+      /*   if (!(await AlbumSchema)) {
         return res.status(400).json({
           message: "Dados inválidos",
         });
-      }
-      const album = await Album.create(req.body);
+      } */
+      const stand = await Stand.create(req.body);
+      const album = await Album.update(
+        { sale: true },
+        { where: { id: req.body.album_id } }
+      );
       return res.status(200).json({
         message: "Figurinha salva com sucesso",
-        album: album,
+        stand: stand,
       });
     } catch (e) {
       console.error(e);
