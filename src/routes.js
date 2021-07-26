@@ -23,7 +23,7 @@ routes.get("/players/show/:id", AuthMidleware, PlayersController.show);
 routes.post("/players/register", PlayersController.store); //Função Pública de Registro
 routes.post("/players/update", AuthMidleware, PlayersController.update);
 routes.get(
-  "/players/:id/changeAudio/:state",
+  "/players/:id/change-audio/:state",
   AuthMidleware,
   PlayersController.changeAudio
 );
@@ -32,8 +32,6 @@ routes.get(
   AuthMidleware,
   PlayersController.acceptRules
 );
-
-changeAudio;
 
 /* Albuns */
 routes.get("/figures-types", AuthMidleware, FiguresTypesController.index);
