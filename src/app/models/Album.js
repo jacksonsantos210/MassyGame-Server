@@ -1,7 +1,4 @@
 const { Model, DataTypes } = require("sequelize");
-/* const Figure = require("./Figure");
-const Player = require("./Player"); */
-
 class Album extends Model {
   static init(sequelize) {
     console.log("APP-> Model: Album, has been initialized");
@@ -18,17 +15,12 @@ class Album extends Model {
         sequelize,
       }
     );
-
-    //;
-  }
-  /* 
-  static associateFigure(model) {
-    this.belongsTo(model, { foreingKey: "figures_id", as: "figures" });
   }
 
-  static associatePlayer(model) {
-    this.belongsTo(model, { foreingKey: "players_id", as: "players" });
-  } */
+  static associate(models) {
+    this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
+    this.belongsTo(models.Figure, { foreingKey: "figure_id", as: "figure" });
+  }
 }
 
 module.exports = Album;

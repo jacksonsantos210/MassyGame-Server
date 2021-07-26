@@ -17,9 +17,9 @@ class Figure extends Model {
     );
   }
 
-  /*  static associateAlbum(model) {
-    this.hasMany(model, { foreingKey: "figures_id", as: "albums" });
-  } */
+  static associate(models) {
+    this.hasMany(models.Album, { foreingKey: "figure_id", as: "albums" });
+  }
 }
 
 module.exports = Figure;
