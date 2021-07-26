@@ -30,11 +30,6 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
-      pasted: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
       sold: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
