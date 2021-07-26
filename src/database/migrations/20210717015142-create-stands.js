@@ -17,7 +17,7 @@ module.exports = {
           key: "id",
         },
       },
-      figure_id: {
+      album_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -37,7 +37,7 @@ module.exports = {
       },
       sold_when: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "players",
           key: "id",
