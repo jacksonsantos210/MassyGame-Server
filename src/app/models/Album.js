@@ -20,6 +20,8 @@ class Album extends Model {
   static associate(models) {
     this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
     this.belongsTo(models.Figure, { foreingKey: "figure_id", as: "figure" });
+    this.hasMany(models.Stand, { foreingKey: "album_id", as: "stands" });
+    //this.belongsTo(models.Stand, { foreingKey: "figure_id", as: "stands" });
   }
 }
 
