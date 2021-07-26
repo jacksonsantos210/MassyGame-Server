@@ -15,12 +15,19 @@ routes.get("/", function (req, res) {
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
 //routes.post("/auth/developer", AuthController.developerLogIn);
+routes.post("/logout", AuthController.logout);
 
 /* Players */
 routes.get("/players", AuthMidleware, PlayersController.index);
 routes.get("/players/show/:id", AuthMidleware, PlayersController.show);
 routes.post("/players/register", PlayersController.store); //Função Pública de Registro
 routes.post("/players/update", AuthMidleware, PlayersController.update);
+/* routes.get(
+  "players/:id/accept-rule",
+  AuthMidleware,
+  PlayersController.acceptRules
+); */
+
 /* Albuns */
 routes.get("/figures-types", AuthMidleware, FiguresTypesController.index);
 routes.get(

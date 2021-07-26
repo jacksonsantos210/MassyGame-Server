@@ -86,7 +86,6 @@ class PlayersController {
 
       return res.status(200).json({
         message: "Dados atualizados com sucesso",
-
         player: player,
       });
     } catch (error) {
