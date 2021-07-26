@@ -29,9 +29,10 @@ PlayersSession.init(connection);
 Premier.init(connection);
 Rank.init(connection);
 //Associates
-/* Album.associateFigure(Figure);
-Album.associatePlayer(Player);
-Figure.associateAlbum(Album);
-Player.associateAlbum(Player); */
+console.log("APP-> Model-Associations: registrations in initializing");
+Album.associate(connection.models);
+Figure.associate(connection.models);
+Player.associate(connection.models);
+console.log("APP-> Model-Associations: registrations has been initialized");
 
 module.exports = connection;
