@@ -95,6 +95,40 @@ class PlayersController {
       });
     }
   }
+
+  async acceptRules(req, res) {
+    try {
+      const player = await Player.update(
+        { rules_accept: true },
+        {
+          where: { id: req.params.id },
+        }
+      );
+      return res.status(200).json({ message: "OK" });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        message: "Erro ao tentar atualizar jogador",
+      });
+    }
+  }
+
+  async changeAudio(req, res) {
+    try {
+      const player = await Player.update(
+        { audio_play: req.params.state },
+        {
+          where: { id: req.params.id },
+        }
+      );
+      return res.status(200).json({ message: "OK" });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        message: "Erro ao tentar atualizar jogador",
+      });
+    }
+  }
 }
 
 module.exports = new PlayersController();
