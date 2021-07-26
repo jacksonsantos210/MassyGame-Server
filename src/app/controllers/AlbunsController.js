@@ -31,7 +31,7 @@ class AlbunsController {
         where: {
           id: req.params.id,
         },
-        include: { association: "albums" },
+        include: { association: "figure" },
       });
       return res.status(200).json({
         album: album,
