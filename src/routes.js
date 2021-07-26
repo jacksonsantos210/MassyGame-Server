@@ -5,6 +5,7 @@ const PlayersController = require("./app/controllers/PlayersController");
 const FiguresController = require("./app/controllers/FiguresController");
 const AlbunsController = require("./app/controllers/AlbunsController");
 const FiguresTypesController = require("./app/controllers/FiguresTypesController");
+const StandsController = require("./app/controllers/StandsController");
 
 const routes = new Router();
 console.log("APP -> Load routes");
@@ -63,5 +64,13 @@ routes.get("/albums/player/:id", AuthMidleware, AlbunsController.findByPlayer);
 routes.post("/albums/create", AuthMidleware, AlbunsController.store);
 //routes.put("/albums/update/:id",AuthMidleware,  AlbunsController.update);
 //routes.delete("/albums/delete:id",AuthMidleware,  AlbunsController.delete);
+
+/* Albuns */
+routes.get("/stands", AuthMidleware, StandsController.index);
+routes.get("/stands/show/:id", AuthMidleware, StandsController.show);
+routes.get("/stands/player/:id", AuthMidleware, StandsController.findByPlayer);
+routes.post("/stands/create", AuthMidleware, StandsController.store);
+//routes.put("/stands/update/:id",AuthMidleware,  StandsController.update);
+//routes.delete("/stands/delete:id",AuthMidleware,  StandsController.delete);
 
 module.exports = routes;
