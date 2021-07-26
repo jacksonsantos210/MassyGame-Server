@@ -6,13 +6,14 @@ const Player = require("../models/Player");
 class AlbunsController {
   async index(req, res) {
     try {
-      //Logs.save("login_success", `player: ${req.body.email}`, "player");
+      await Logs.save("read_table", `Albuns all`, "player");
       const albums = await Album.findAll();
       return res.status(200).json({
         albums: albums,
       });
     } catch (error) {
       console.error(error);
+      await Logs.save("error", `AlbunsController.index: ${error}`, "server");
       return res.status(400).json({
         message: "Erro ao tentar listar albuns",
       });
@@ -21,10 +22,16 @@ class AlbunsController {
 
   async show(req, res) {
     try {
+      await Logs.save(
+        "read_table",
+        `Albuns by player: ${req.param.id}`,
+        "player"
+      );
       const album = await Album.findOne({
         where: {
           id: req.params.id,
         },
+        include: { association: "albums" },
       });
       return res.status(200).json({
         album: album,
@@ -46,6 +53,7 @@ class AlbunsController {
           { sale: false },
           { sold: false },
         ],
+        include: { association: "figure" },
       });
       const albumsUnPasted = await Album.findAll({
         where: [
@@ -54,6 +62,7 @@ class AlbunsController {
           { sale: false },
           { sold: false },
         ],
+        include: { association: "figure" },
       });
       return res.status(200).json({
         pasted: albumsPasted,
