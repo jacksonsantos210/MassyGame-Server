@@ -34,9 +34,9 @@ routes.get(
   AuthMidleware,
   PlayersController.acceptRules
 );
-routes.get("/rank/global", AuthMidleware, RankController.global);
+/* routes.get("/rank/global", AuthMidleware, RankController.global);
 routes.get("/rank/top", AuthMidleware, RankController.top);
-routes.get("/rank/player", AuthMidleware, RankController.player);
+routes.get("/rank/player", AuthMidleware, RankController.player); */
 /* Albuns */
 routes.get("/figures-types", AuthMidleware, FiguresTypesController.index);
 routes.get(
