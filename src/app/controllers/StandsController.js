@@ -1,24 +1,21 @@
 const Logs = require("./LogsController");
 const Stand = require("../models/Stand");
-const AlbumSchema = require("../yup/AlbumSchema");
 const Player = require("../models/Player");
 const Album = require("../models/Album");
-
-const { Op } = import("sequelize");
 
 class StandsController {
   async index(req, res) {
     try {
       //await Logs.save("read_table", `Stands all`, "player");
       const stands = await Stand.findAll({
-        include: { association: "album" },
+        include: { association: "figure" },
       });
       return res.status(200).json({
         stands: stands,
       });
     } catch (error) {
       console.error(error);
-      //await Logs.save("error", `StandsController.index: ${error}`, "server");
+      await Logs.save("error", `StandsController.index: ${error}`, "server");
       return res.status(400).json({
         message: "Erro ao tentar listar stands",
       });
@@ -27,36 +24,37 @@ class StandsController {
 
   async show(req, res) {
     try {
-      await Logs.save("read_table", `Stands by player:`, "player");
+      //await Logs.save("read_table", `Stands by player:`, "player");
       const stand = await Stand.findOne({
         where: {
           id: req.params.id,
         },
-        include: { association: "album" },
+        include: { association: "figure" },
       });
       return res.status(200).json({
-        album: album,
+        stand: stand,
       });
     } catch (error) {
       console.error(error);
+      await Logs.save("error", `StandsController.show: ${error}`, "server");
       return res.status(400).json({
-        message: "Erro ao tentar carregar album",
+        message: "Erro ao tentar carregar stand",
       });
     }
   }
 
   async findByPlayer(req, res) {
     try {
+      //await Logs.save("read_table", `Stands by player :${req.params.id}`, "player");
       const sales = await Stand.findAll({
         where: { sold: false },
-        include: { association: "album" },
+        include: { association: "figure" },
       });
       const hand = await Album.findAll({
         where: [
           { player_id: req.params.id },
           { pasted: false },
           { sale: false },
-          { sold: false },
         ],
         include: { association: "figure" },
       });
@@ -65,6 +63,11 @@ class StandsController {
         hand: hand,
       });
     } catch (error) {
+      await Logs.save(
+        "error",
+        `StandsController.findByPlayer: ${error}`,
+        "server"
+      );
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar carregar figurinhas do jogador",
@@ -74,24 +77,62 @@ class StandsController {
 
   async store(req, res) {
     try {
+      await Logs.save("insert", `Stands by player :${req.params.id}`, "player");
       /*   if (!(await AlbumSchema)) {
         return res.status(400).json({
           message: "Dados inválidos",
         });
       } */
-      const stand = await Stand.create(req.body);
-      const album = await Album.update(
-        { sale: true },
-        { where: { id: req.body.album_id } }
-      );
-      return res.status(200).json({
-        message: "Figurinha salva com sucesso",
-        stand: stand,
+      const { player_id, figure } = await Album.findOne({
+        where: { id: req.body.album_id },
+        include: { association: "figure" },
       });
-    } catch (e) {
-      console.error(e);
+      if (player_id != req.user_id) {
+        await Logs.save(
+          "danger",
+          `StandsController.store: One attempt insert stand, this player not is a user logged`,
+          "server"
+        );
+        return res.status(400).json({
+          message: "Jogador sem permissão de venda",
+        });
+      } else {
+        await Album.update(
+          { sale: true, sale_at: Date() },
+          { where: { id: req.body.album_id } }
+        );
+        const stand = await Stand.create({
+          seller: player_id,
+          figure_id: figure.id,
+        });
+        const { score } = await Player.findByPk(req.user_id);
+        let scoreNew = score + figure.coin;
+        await Player.update({ score: scoreNew }, { where: { id: player_id } });
+        const sales = await Stand.findAll({
+          where: { sold: false },
+          include: { association: "figure" },
+        });
+        const hand = await Album.findAll({
+          where: [
+            { player_id: req.user_id },
+            { pasted: false },
+            { sale: false },
+          ],
+          include: { association: "figure" },
+        });
+        return res.status(200).json({
+          message: "Figurinha vendida com sucesso",
+          cash: scoreNew,
+          stand: stand,
+          sales: sales,
+          hand: hand,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      await Logs.save("error", `StandsController.store: ${error}`, "server");
       return res.status(400).json({
-        message: "Erro ao tentar salvar figurinha",
+        message: "Erro ao tentar vender figurinha",
       });
     }
   }
