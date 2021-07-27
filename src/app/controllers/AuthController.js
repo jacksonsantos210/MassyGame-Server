@@ -11,6 +11,29 @@ const config = require("../../config/auth");
 const AuthSchema = require("../yup/AuthSchema");
 
 class AuthController {
+  async me(req, res) {
+    var user = null;
+    if (req.params.type === "player")
+      user = await Player.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+        include: { association: "albums" },
+      });
+    if (req.params.type === "admin")
+      user = await Admin.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+      });
+    if (req.params.type === "dev")
+      user = await Developer.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+      });
+    return res.status(200).json(user);
+  }
+
+  // /attributes: { exclude: ["password"] }
+
   async playerLogIn(req, res) {
     try {
       if (!(await AuthSchema.isValid(req.body))) {
