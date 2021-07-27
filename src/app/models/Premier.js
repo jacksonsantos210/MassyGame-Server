@@ -15,6 +15,10 @@ class Premier extends Model {
       }
     );
   }
+
+  static associate(models) {
+    this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
+  }
 }
 
 module.exports = Premier;
