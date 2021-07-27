@@ -11,7 +11,6 @@ const Log = require("../app/models/Log");
 const Player = require("../app/models/Player");
 const PlayersSession = require("../app/models/PlayersSession");
 const Premier = require("../app/models/Premier");
-const Rank = require("../app/models/Rank");
 const Stand = require("../app/models/Stand");
 const FiguresType = require("../app/models/FiguresType");
 
@@ -28,7 +27,6 @@ Log.init(connection);
 Player.init(connection);
 PlayersSession.init(connection);
 Premier.init(connection);
-Rank.init(connection);
 Stand.init(connection);
 //Associates
 console.log("APP-> Model-Associations: registrations in initializing");
@@ -36,6 +34,7 @@ Album.associate(connection.models);
 Figure.associate(connection.models);
 Player.associate(connection.models);
 Stand.associate(connection.models);
+Premier.associate(connection.models);
 console.log("APP-> Model-Associations: registrations has been initialized");
 
 module.exports = connection;
