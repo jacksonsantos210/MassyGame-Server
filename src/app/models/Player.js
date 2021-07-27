@@ -27,7 +27,8 @@ class Player extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Album, { foreingKey: "player_id", as: "players" });
+    this.hasMany(models.Album, { foreingKey: "player_id", as: "albums" });
+    this.hasMany(models.Premier, { foreingKey: "player_id", as: "premiers" });
   }
 }
 
