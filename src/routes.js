@@ -17,7 +17,7 @@ routes.get("/", function (req, res) {
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
 //routes.post("/auth/developer", AuthController.developerLogIn);
-routes.post("/logout", AuthMidleware, AuthController.logout);
+routes.post("/logout/:type", AuthMidleware, AuthController.logout);
 routes.get("/me/:type", AuthMidleware, AuthController.me);
 /* Players */
 routes.get("/players", AuthMidleware, PlayersController.index);
