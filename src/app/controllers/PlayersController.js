@@ -24,9 +24,8 @@ class PlayersController {
   async show(req, res) {
     try {
       let result = {};
-      const { id } = req.params;
       const player = await Player.findOne({
-        where: { id: id },
+        where: { id: req.user_id },
         attributes: { exclude: ["password"] },
       });
       if (player) {
@@ -81,7 +80,7 @@ class PlayersController {
         });
       }
       const player = await Player.update(req.body, {
-        where: { id: req.body.id },
+        where: { id: req.user_id },
       });
 
       return res.status(200).json({
@@ -101,7 +100,7 @@ class PlayersController {
       const player = await Player.update(
         { rules_accept: true },
         {
-          where: { id: req.params.id },
+          where: { id: req.user_id },
         }
       );
       return res.status(200).json({ message: "OK" });
@@ -118,7 +117,7 @@ class PlayersController {
       const player = await Player.update(
         { audio_play: req.params.state },
         {
-          where: { id: req.params.id },
+          where: { id: req.user_id },
         }
       );
       return res.status(200).json({ message: "OK" });
