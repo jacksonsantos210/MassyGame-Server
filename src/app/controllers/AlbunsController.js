@@ -6,7 +6,7 @@ const Player = require("../models/Player");
 class AlbunsController {
   async index(req, res) {
     try {
-      await Logs.save("read_table", `Albuns all`, "player");
+      await Logs.save("read_table", `Albums all`, "player");
       const albums = await Album.findAll();
       return res.status(200).json({
         albums: albums,
@@ -47,21 +47,11 @@ class AlbunsController {
   async findByPlayer(req, res) {
     try {
       const albumsPasted = await Album.findAll({
-        where: [
-          { player_id: req.params.id },
-          { pasted: true },
-          { sale: false },
-          { sold: false },
-        ],
+        where: [{ player_id: req.user_id }, { pasted: true }, { sale: false }],
         include: { association: "figure" },
       });
       const albumsUnPasted = await Album.findAll({
-        where: [
-          { player_id: req.params.id },
-          { pasted: false },
-          { sale: false },
-          { sold: false },
-        ],
+        where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
         include: { association: "figure" },
       });
       return res.status(200).json({
