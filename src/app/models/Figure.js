@@ -19,6 +19,7 @@ class Figure extends Model {
 
   static associate(models) {
     this.hasMany(models.Album, { foreingKey: "figure_id", as: "albums" });
+    this.hasMany(models.Stand, { foreingKey: "figure_id", as: "stands" });
   }
 }
 
