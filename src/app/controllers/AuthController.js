@@ -100,7 +100,8 @@ class AuthController {
 
   async logout(req, res) {
     try {
-      const { type, id } = req.params;
+      const { type } = req.params;
+      const { id } = req.user_id;
       await Logs.save(
         "unregister_Session",
         `update session to ${type} : ${id}`,
