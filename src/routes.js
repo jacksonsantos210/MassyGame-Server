@@ -12,12 +12,13 @@ console.log("APP -> Load routes");
 routes.get("/", function (req, res) {
   return "Welcome, this is a Massey Game Server";
 });
+
 /* Auth */
 routes.post("/auth/player", AuthController.playerLogIn);
 //routes.post("/auth/admin", AuthController.adminLogIn);
 //routes.post("/auth/developer", AuthController.developerLogIn);
-routes.post("/logout", AuthController.logout);
-
+routes.post("/logout", AuthMidleware, AuthController.logout);
+routes.get("/me/:type", AuthMidleware, AuthController.me);
 /* Players */
 routes.get("/players", AuthMidleware, PlayersController.index);
 routes.get("/players/show/:id", AuthMidleware, PlayersController.show);
