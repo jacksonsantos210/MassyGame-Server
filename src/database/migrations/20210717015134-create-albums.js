@@ -34,15 +34,14 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
-      sold: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
       sale: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      sale_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,

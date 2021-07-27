@@ -9,26 +9,23 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      player_id: {
+
+      seller: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "players",
           key: "id",
         },
       },
-      album_id: {
+
+      figure_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "albums",
+          model: "figures",
           key: "id",
         },
-      },
-      price: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
       },
       sold: {
         type: Sequelize.BOOLEAN,
