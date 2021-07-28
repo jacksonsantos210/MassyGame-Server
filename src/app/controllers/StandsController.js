@@ -52,7 +52,7 @@ class StandsController {
       });
       const hand = await Album.findAll({
         where: [
-          { player_id: req.params.id },
+          { player_id: req.user_id },
           { pasted: false },
           { sale: false },
         ],

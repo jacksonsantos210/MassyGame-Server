@@ -1,11 +1,11 @@
 const { Router } = require("express");
-const AuthMidleware = require("./app/Midlewares/AuthMidleware");
-const AuthController = require("./app/controllers/AuthController");
-const PlayersController = require("./app/controllers/PlayersController");
-const FiguresController = require("./app/controllers/FiguresController");
-const AlbunsController = require("./app/controllers/AlbunsController");
-const FiguresTypesController = require("./app/controllers/FiguresTypesController");
-const StandsController = require("./app/controllers/StandsController");
+const AuthMidleware = require("../app/Midlewares/AuthMidleware");
+const AuthController = require("../app/controllers/AuthController");
+const PlayersController = require("../app/controllers/PlayersController");
+const FiguresController = require("../app/controllers/FiguresController");
+const AlbunsController = require("../app/controllers/AlbunsController");
+const FiguresTypesController = require("../app/controllers/FiguresTypesController");
+const StandsController = require("../app/controllers/StandsController");
 
 const routes = new Router();
 console.log("APP -> Load routes");
@@ -71,7 +71,7 @@ routes.post("/albums/create", AuthMidleware, AlbunsController.store);
 /* Albuns */
 routes.get("/stands", AuthMidleware, StandsController.index);
 routes.get("/stands/show/:id", AuthMidleware, StandsController.show);
-routes.get("/stands/player/:id", AuthMidleware, StandsController.findByPlayer);
+routes.get("/stands/player", AuthMidleware, StandsController.findByPlayer);
 routes.post("/stands/create", AuthMidleware, StandsController.store);
 //routes.put("/stands/update/:id",AuthMidleware,  StandsController.update);
 //routes.delete("/stands/delete:id",AuthMidleware,  StandsController.delete);
