@@ -1,11 +1,11 @@
 const { Router } = require("express");
-const AuthMidleware = require("../app/Midlewares/AuthMidleware");
-const AuthController = require("../app/controllers/AuthController");
-const PlayersController = require("../app/controllers/PlayersController");
-const FiguresController = require("../app/controllers/FiguresController");
-const AlbunsController = require("../app/controllers/AlbunsController");
-const FiguresTypesController = require("../app/controllers/FiguresTypesController");
-const StandsController = require("../app/controllers/StandsController");
+const AuthMidleware = require("./app/Midlewares/AuthMidleware");
+const AuthController = require("./app/controllers/AuthController");
+const PlayersController = require("./app/controllers/PlayersController");
+const FiguresController = require("./app/controllers/FiguresController");
+const AlbunsController = require("./app/controllers/AlbunsController");
+const FiguresTypesController = require("./app/controllers/FiguresTypesController");
+const StandsController = require("./app/controllers/StandsController");
 
 const routes = new Router();
 console.log("APP -> Load routes");
