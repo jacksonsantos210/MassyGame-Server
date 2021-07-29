@@ -66,6 +66,23 @@ class AlbunsController {
     }
   }
 
+  async historic(req, res) {
+    try {
+      const albums = await Album.findAll({
+        where: [{ player_id: req.user_id }],
+        include: { association: "figure" },
+      });
+      return res.status(200).json({
+        albums: albums,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({
+        message: "Erro ao tentar carregar figurinhas do jogador",
+      });
+    }
+  }
+
   async store(req, res) {
     try {
       if (!(await AlbumSchema)) {
