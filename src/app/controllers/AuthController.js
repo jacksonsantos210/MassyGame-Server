@@ -36,16 +36,18 @@ class AuthController {
 
   async playerLogIn(req, res) {
     try {
+      const { email, password } = req.body;
       if (!(await AuthSchema.isValid(req.body))) {
         await Logs.save("validate-invalid", `login atempt: ${email}`, "player");
         return res.status(400).json({
           message: "Ops! Dados Inválidos.",
         });
       }
-      const { email, password } = req.body;
+
       await Logs.save("login_attempt", `login atempt: ${email}`, "player");
       const player = await Player.findOne({
         where: { email: email },
+        include: { association: "albums" },
       });
       if (!player) {
         await Logs.save(
@@ -107,18 +109,19 @@ class AuthController {
         `update session to ${type} : ${id}`,
         type
       );
+      let valid = null;
       if (type === "player") {
-        const valid = await PlayersSession.update(
+        valid = await PlayersSession.update(
           { logged: false },
           { where: { player_id: id } }
         );
       } else if (type === "developer") {
-        const valid = await DevelopersSession.update(
+        valid = await DevelopersSession.update(
           { logged: false },
           { where: { developer_id: id } }
         );
       } else if (type === "admin") {
-        const valid = await AdminsSession.update(
+        valid = await AdminsSession.update(
           { logged: false },
           { where: { admin_id: id } }
         );
