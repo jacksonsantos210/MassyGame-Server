@@ -74,6 +74,7 @@ routes.get("/stands", AuthMidleware, StandsController.index);
 routes.get("/stands/show/:id", AuthMidleware, StandsController.show);
 routes.get("/stands/player", AuthMidleware, StandsController.findByPlayer);
 routes.post("/stands/create", AuthMidleware, StandsController.store);
+routes.post("/stands/buy", AuthMidleware, StandsController.buy);
 //routes.put("/stands/update/:id",AuthMidleware,  StandsController.update);
 //routes.delete("/stands/delete:id",AuthMidleware,  StandsController.delete);
 
