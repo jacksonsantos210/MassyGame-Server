@@ -6,14 +6,14 @@ const Player = require("../models/Player");
 class AlbunsController {
   async index(req, res) {
     try {
-      await Logs.save("read_table", `Albums all`, "player");
+      /*  await Logs.save("read_table", `Albums all`, "player"); */
       const albums = await Album.findAll();
       return res.status(200).json({
         albums: albums,
       });
     } catch (error) {
       console.error(error);
-      await Logs.save("error", `AlbunsController.index: ${error}`, "server");
+      /*await Logs.save("error", `AlbunsController.index: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar listar albuns",
       });
@@ -22,11 +22,11 @@ class AlbunsController {
 
   async show(req, res) {
     try {
-      await Logs.save(
+      /* await Logs.save(
         "read_table",
         `Albuns by player: ${req.param.id}`,
         "player"
-      );
+      ); */
       const album = await Album.findOne({
         where: {
           id: req.params.id,
