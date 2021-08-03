@@ -15,7 +15,7 @@ class StandsController {
       });
     } catch (error) {
       console.error(error);
-      await Logs.save("error", `StandsController.index: ${error}`, "server");
+      /*  await Logs.save("error", `StandsController.index: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar listar stands",
       });
@@ -36,9 +36,29 @@ class StandsController {
       });
     } catch (error) {
       console.error(error);
-      await Logs.save("error", `StandsController.show: ${error}`, "server");
+      /* await Logs.save("error", `StandsController.show: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar carregar stand",
+      });
+    }
+  }
+
+  async update(req, res) {
+    try {
+      if (!(await AlbumSchema)) {
+        return res.status(400).json({
+          message: "Dados inválidos",
+        });
+      }
+      const album = await Album.update(req.body);
+      return res.status(200).json({
+        message: "Figurinha salva com sucesso",
+        album: album,
+      });
+    } catch (e) {
+      console.error(e);
+      return res.status(400).json({
+        message: "Erro ao tentar salvar figurinha",
       });
     }
   }
@@ -51,11 +71,7 @@ class StandsController {
         include: { association: "figure" },
       });
       const hand = await Album.findAll({
-        where: [
-          { player_id: req.user_id },
-          { pasted: false },
-          { sale: false },
-        ],
+        where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
         include: { association: "figure" },
       });
       return res.status(200).json({
@@ -63,11 +79,11 @@ class StandsController {
         hand: hand,
       });
     } catch (error) {
-      await Logs.save(
+      /* await Logs.save(
         "error",
         `StandsController.findByPlayer: ${error}`,
         "server"
-      );
+      ); */
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar carregar figurinhas do jogador",
@@ -77,7 +93,7 @@ class StandsController {
 
   async store(req, res) {
     try {
-      await Logs.save("insert", `Stands by player :${req.params.id}`, "player");
+      /* await Logs.save("insert", `Stands by player :${req.params.id}`, "player"); */
       /*   if (!(await AlbumSchema)) {
         return res.status(400).json({
           message: "Dados inválidos",
@@ -130,29 +146,80 @@ class StandsController {
       }
     } catch (error) {
       console.error(error);
-      await Logs.save("error", `StandsController.store: ${error}`, "server");
+      /* await Logs.save("error", `StandsController.store: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar vender figurinha",
       });
     }
   }
 
-  async update(req, res) {
+  async buy(req, res) {
     try {
-      if (!(await AlbumSchema)) {
+      const stand = await Stand.findOne({
+        where: { id: req.body.stand_id },
+        include: { association: "figure" },
+      });
+      if (stand.sold == true) {
         return res.status(400).json({
-          message: "Dados inválidos",
+          message: "Esta figurinha foi comprada por outro jogador. :( ",
+          error_cod: "stand-1",
         });
       }
-      const album = await Album.update(req.body);
-      return res.status(200).json({
-        message: "Figurinha salva com sucesso",
-        album: album,
+      const player = await Player.findByPk(req.user_id);
+      if (player.score < stand.figure.coin) {
+        return res.status(400).json({
+          message: `Seu saldo é inferior oa valor da figura. Você tem M$ ${player.score}`,
+          player_score: player.score,
+          figure_coin: stand.figure.coin,
+          error_cod: "stand-2",
+        });
+      }
+      const album = await Album.create({
+        player_id: player.id,
+        figure_id: stand.figure.id,
+        origin: "stand",
+        pasted: false,
+        sale: false,
+        sale_at: null,
       });
-    } catch (e) {
-      console.error(e);
+      if (album) {
+        let scoreNew = Player.score - stand.figure.coin;
+        await Player.update({ score: scoreNew }, { where: { id: player.id } });
+        await Stand.update(
+          { sold: true, sold_when: player.id, sold_at: Date() },
+          { where: { id: stand.id } }
+        );
+        const sales = await Stand.findAll({
+          where: { sold: false },
+          include: { association: "figure" },
+        });
+        const hand = await Album.findAll({
+          where: [
+            { player_id: req.user_id },
+            { pasted: false },
+            { sale: false },
+          ],
+          include: { association: "figure" },
+        });
+        return res.status(201).json({
+          message: "Compra efetuada com sucesso",
+          album: album,
+          cash: scoreNew,
+          sales: sales,
+          hand: hand,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Falha ao finalizar a compra",
+          error_cod: "stand-3",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      /* await Logs.save("error", `StandsController.buy: ${error}`, "server"); */
       return res.status(400).json({
-        message: "Erro ao tentar salvar figurinha",
+        message: "Erro ao tentar vender figurinha",
+        error_cod: "stand-catch",
       });
     }
   }
