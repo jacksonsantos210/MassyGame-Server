@@ -161,7 +161,7 @@ class StandsController {
       });
       if (stand.sold == true) {
         return res.status(400).json({
-          message: "Esta figurinha foi comprada por outro jogador. :( ",
+          message: "Esta figurinha foi comprada por outro jogador. &128533 ",
           error_cod: "stand-1",
         });
       }
