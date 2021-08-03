@@ -160,14 +160,14 @@ class StandsController {
         include: { association: "figure" },
       });
       if (stand.sold == true) {
-        return res.status(400).json({
-          message: "Esta figurinha foi comprada por outro jogador. &128533 ",
+        return res.status(200).json({
+          message: "Esta figurinha foi comprada por outro jogador. ",
           error_cod: "stand-1",
         });
       }
       const player = await Player.findByPk(req.user_id);
       if (player.score < stand.figure.coin) {
-        return res.status(400).json({
+        return res.status(200).json({
           message: `Seu saldo é inferior oa valor da figura. Você tem M$ ${player.score}`,
           player_score: player.score,
           figure_coin: stand.figure.coin,
@@ -183,7 +183,7 @@ class StandsController {
         sale_at: null,
       });
       if (album) {
-        let scoreNew = Player.score - stand.figure.coin;
+        let scoreNew = player.score - stand.figure.coin;
         await Player.update({ score: scoreNew }, { where: { id: player.id } });
         await Stand.update(
           { sold: true, sold_when: player.id, sold_at: Date() },
@@ -209,7 +209,7 @@ class StandsController {
           hand: hand,
         });
       } else {
-        return res.status(400).json({
+        return res.status(200).json({
           message: "Falha ao finalizar a compra",
           error_cod: "stand-3",
         });
@@ -218,7 +218,7 @@ class StandsController {
       console.error(error);
       /* await Logs.save("error", `StandsController.buy: ${error}`, "server"); */
       return res.status(400).json({
-        message: "Erro ao tentar vender figurinha",
+        message: "Erro ao tentar comprar figurinha",
         error_cod: "stand-catch",
       });
     }
