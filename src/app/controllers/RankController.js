@@ -10,8 +10,7 @@ class RankController {
       });
       const players = await Player.findAndCountAll({
         order: [["score", "DESC"]],
-        limit: 97,
-        offset: 3,
+        limit: 100,
         attributes: { exclude: ["password"] },
       });
       return res.status(200).json({
