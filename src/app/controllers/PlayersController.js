@@ -7,7 +7,7 @@ const PlayerSchema = require("../yup/PlayerSchema");
 class PlayersController {
   async index(req, res) {
     try {
-      const players = await Player.findAll({
+      const players = await Player.findAndCountAll({
         attributes: { exclude: ["password"] },
       });
       return res.status(200).json({
