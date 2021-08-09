@@ -3,10 +3,19 @@ const Player = require("../models/Player");
 class RankController {
   async index(req, res) {
     try {
-      const players = await Player.findAll({
-        include: { association: "figure" },
+      const top = await Player.findAll({
+        order: [["score", "DESC"]],
+        limit: 3,
+        attributes: { exclude: ["password"] },
+      });
+      const players = await Player.findAndCountAll({
+        order: [["score", "DESC"]],
+        limit: 97,
+        offset: 3,
+        attributes: { exclude: ["password"] },
       });
       return res.status(200).json({
+        top: top,
         rank: players,
       });
     } catch (error) {
