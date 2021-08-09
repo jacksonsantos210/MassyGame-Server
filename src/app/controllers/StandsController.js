@@ -6,16 +6,24 @@ const Album = require("../models/Album");
 class StandsController {
   async index(req, res) {
     try {
-      //await Logs.save("read_table", `Stands all`, "player");
-      const stands = await Stand.findAll({
+      let limit = 12;
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
+      const { count: size, rows: stands } = await Stand.findAndCountAll({
         include: { association: "figure" },
+        limit: limit,
+        offset: page * limit,
       });
+
+      let pages = Math.ceil(size / limit);
       return res.status(200).json({
-        stands: stands,
+        size,
+        pages,
+        actual: page + 1,
+        stands,
       });
     } catch (error) {
       console.error(error);
-      /*  await Logs.save("error", `StandsController.index: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar listar stands",
       });
