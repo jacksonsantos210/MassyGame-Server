@@ -74,16 +74,31 @@ class StandsController {
   async findByPlayer(req, res) {
     try {
       //await Logs.save("read_table", `Stands by player :${req.params.id}`, "player");
-      const sales = await Stand.findAll({
+      /*   const sales = await Stand.findAll({
         where: { sold: false },
         include: { association: "figure" },
+      }); */
+
+      let limit = 12;
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
+      const { count: size, rows: stands } = await Stand.findAndCountAll({
+        include: { association: "figure" },
+        limit: limit,
+        offset: page * limit,
       });
+      let pages = Math.ceil(size / limit);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
         include: { association: "figure" },
       });
       return res.status(200).json({
-        sales: sales,
+        sales: {
+          size,
+          pages,
+          actual: page + 1,
+          stands,
+        },
         hand: hand,
       });
     } catch (error) {
