@@ -32,8 +32,6 @@ class AuthController {
     return res.status(200).json(user);
   }
 
-  // /attributes: { exclude: ["password"] }
-
   async playerLogIn(req, res) {
     try {
       const { email, password } = req.body;
@@ -88,8 +86,8 @@ class AuthController {
       });
       player.password = undefined;
       return res.status(200).json({
-        player: player,
         token: token,
+        player: player,
       });
     } catch (error) {
       console.error(error);
