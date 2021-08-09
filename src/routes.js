@@ -1,10 +1,13 @@
 const { Router } = require("express");
+//Midlewares
 const AuthMidleware = require("./app/Midlewares/AuthMidleware");
-const AuthController = require("./app/controllers/AuthController");
-const PlayersController = require("./app/controllers/PlayersController");
-const FiguresController = require("./app/controllers/FiguresController");
+//Controllers
 const AlbunsController = require("./app/controllers/AlbunsController");
+const AuthController = require("./app/controllers/AuthController");
+const FiguresController = require("./app/controllers/FiguresController");
 const FiguresTypesController = require("./app/controllers/FiguresTypesController");
+const PlayersController = require("./app/controllers/PlayersController");
+const RankController = require("./app/controllers/RankController");
 const StandsController = require("./app/controllers/StandsController");
 
 const routes = new Router();
@@ -77,5 +80,7 @@ routes.post("/stands/create", AuthMidleware, StandsController.store);
 routes.post("/stands/buy", AuthMidleware, StandsController.buy);
 //routes.put("/stands/update/:id",AuthMidleware,  StandsController.update);
 //routes.delete("/stands/delete:id",AuthMidleware,  StandsController.delete);
+
+routes.get("/rank", AuthMidleware, RankController.index);
 
 module.exports = routes;
