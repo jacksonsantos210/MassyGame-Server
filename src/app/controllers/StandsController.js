@@ -3,10 +3,11 @@ const Stand = require("../models/Stand");
 const Player = require("../models/Player");
 const Album = require("../models/Album");
 
+const limit = 12;
+
 class StandsController {
   async index(req, res) {
     try {
-      let limit = 12;
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
@@ -73,16 +74,11 @@ class StandsController {
 
   async findByPlayer(req, res) {
     try {
-      //await Logs.save("read_table", `Stands by player :${req.params.id}`, "player");
-      /*   const sales = await Stand.findAll({
-        where: { sold: false },
-        include: { association: "figure" },
-      }); */
-
-      let limit = 12;
+      const 
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
+        where: { sold: false },
         include: { association: "figure" },
         limit: limit,
         offset: page * limit,
@@ -102,11 +98,6 @@ class StandsController {
         hand: hand,
       });
     } catch (error) {
-      /* await Logs.save(
-        "error",
-        `StandsController.findByPlayer: ${error}`,
-        "server"
-      ); */
       console.error(error);
       return res.status(400).json({
         message: "Erro ao tentar carregar figurinhas do jogador",
@@ -147,9 +138,14 @@ class StandsController {
         const { score } = await Player.findByPk(req.user_id);
         let scoreNew = score + figure.coin;
         await Player.update({ score: scoreNew }, { where: { id: player_id } });
-        const sales = await Stand.findAll({
+        let limit = 12;
+        let { page = 1 } = req.query;
+        page = parseInt(page - 1);
+        const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
           include: { association: "figure" },
+          limit: limit,
+          offset: 0,
         });
         const hand = await Album.findAll({
           where: [
@@ -162,8 +158,12 @@ class StandsController {
         return res.status(200).json({
           message: "Figurinha vendida com sucesso",
           cash: scoreNew,
-          stand: stand,
-          sales: sales,
+          sales: {
+            size,
+            pages,
+            actual: page + 1,
+            stands,
+          },
           hand: hand,
         });
       }
