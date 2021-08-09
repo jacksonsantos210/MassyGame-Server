@@ -11,6 +11,7 @@ class StandsController {
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
+        where: { sold: false },
         include: { association: "figure" },
         limit: limit,
         offset: page * limit,
@@ -77,6 +78,7 @@ class StandsController {
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
+        where: { sold: false },
         include: { association: "figure" },
         limit: limit,
         offset: page * limit,
