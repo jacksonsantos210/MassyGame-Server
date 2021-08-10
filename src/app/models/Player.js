@@ -17,6 +17,7 @@ class Player extends Model {
         photo: DataTypes.STRING,
         audio_play: DataTypes.BOOLEAN,
         rules_accept: DataTypes.BOOLEAN,
+        cash: DataTypes.INTEGER,
         score: DataTypes.INTEGER,
         password: DataTypes.STRING,
       },
