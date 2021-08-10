@@ -1,9 +1,8 @@
-const Logs = require("./LogsController");
 const Stand = require("../models/Stand");
 const Player = require("../models/Player");
 const Album = require("../models/Album");
 
-const limit = 12;
+const LIMIT = 12;
 
 class StandsController {
   async index(req, res) {
@@ -13,11 +12,10 @@ class StandsController {
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
         include: { association: "figure" },
-        limit: limit,
-        offset: page * limit,
+        limit: LIMIT,
+        offset: page * LIMIT,
       });
-
-      let pages = Math.ceil(size / limit);
+      let pages = Math.ceil(size / LIMIT);
       return res.status(200).json({
         size,
         pages,
@@ -34,7 +32,6 @@ class StandsController {
 
   async show(req, res) {
     try {
-      //await Logs.save("read_table", `Stands by player:`, "player");
       const stand = await Stand.findOne({
         where: {
           id: req.params.id,
@@ -46,7 +43,6 @@ class StandsController {
       });
     } catch (error) {
       console.error(error);
-      /* await Logs.save("error", `StandsController.show: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar carregar stand",
       });
@@ -80,10 +76,10 @@ class StandsController {
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
         include: { association: "figure" },
-        limit: limit,
-        offset: page * limit,
+        limit: LIMIT,
+        offset: page * LIMIT,
       });
-      let pages = Math.ceil(size / limit);
+      let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
         include: { association: "figure" },
@@ -107,22 +103,11 @@ class StandsController {
 
   async store(req, res) {
     try {
-      /* await Logs.save("insert", `Stands by player :${req.params.id}`, "player"); */
-      /*   if (!(await AlbumSchema)) {
-        return res.status(400).json({
-          message: "Dados inválidos",
-        });
-      } */
       const { player_id, figure } = await Album.findOne({
         where: { id: req.body.album_id },
         include: { association: "figure" },
       });
       if (player_id != req.user_id) {
-        await Logs.save(
-          "danger",
-          `StandsController.store: One attempt insert stand, this player not is a user logged`,
-          "server"
-        );
         return res.status(400).json({
           message: "Jogador sem permissão de venda",
         });
@@ -131,22 +116,20 @@ class StandsController {
           { sale: true, sale_at: Date() },
           { where: { id: req.body.album_id } }
         );
-        const stand = await Stand.create({
+        await Stand.create({
           seller: player_id,
           figure_id: figure.id,
         });
-        const { score } = await Player.findByPk(req.user_id);
-        let scoreNew = score + figure.coin;
-        await Player.update({ score: scoreNew }, { where: { id: player_id } });
-        let limit = 12;
-        let { page = 1 } = req.query;
-        page = parseInt(page - 1);
+        const { cash } = await Player.findByPk(req.user_id);
+        let cashNew = cash + figure.coin;
+        await Player.update({ cash: cashNew }, { where: { id: player_id } });
         const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
           include: { association: "figure" },
-          limit: limit,
+          limit: LIMIT,
           offset: 0,
         });
+        let pages = Math.ceil(size / LIMIT);
         const hand = await Album.findAll({
           where: [
             { player_id: req.user_id },
@@ -161,7 +144,7 @@ class StandsController {
           sales: {
             size,
             pages,
-            actual: page + 1,
+            actual: 1,
             stands,
           },
           hand: hand,
@@ -169,7 +152,6 @@ class StandsController {
       }
     } catch (error) {
       console.error(error);
-      /* await Logs.save("error", `StandsController.store: ${error}`, "server"); */
       return res.status(400).json({
         message: "Erro ao tentar vender figurinha",
       });
@@ -206,16 +188,19 @@ class StandsController {
         sale_at: null,
       });
       if (album) {
-        let scoreNew = player.score - stand.figure.coin;
-        await Player.update({ score: scoreNew }, { where: { id: player.id } });
+        let cashNew = player.cash - stand.figure.coin;
+        await Player.update({ cash: cashNew }, { where: { id: player.id } });
         await Stand.update(
           { sold: true, sold_when: player.id, sold_at: Date() },
           { where: { id: stand.id } }
         );
-        const sales = await Stand.findAll({
+        const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
           include: { association: "figure" },
+          limit: LIMIT,
+          offset: 0,
         });
+        let pages = Math.ceil(size / LIMIT);
         const hand = await Album.findAll({
           where: [
             { player_id: req.user_id },
@@ -226,9 +211,13 @@ class StandsController {
         });
         return res.status(201).json({
           message: "Compra efetuada com sucesso",
-          album: album,
-          cash: scoreNew,
-          sales: sales,
+          cash: cashNew,
+          sales: {
+            size,
+            pages,
+            actual: 1,
+            stands,
+          },
           hand: hand,
         });
       } else {
