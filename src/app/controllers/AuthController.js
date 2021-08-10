@@ -101,27 +101,22 @@ class AuthController {
   async logout(req, res) {
     try {
       const { type } = req.params;
-      const { id } = req.user_id;
-      await Logs.save(
-        "unregister_Session",
-        `update session to ${type} : ${id}`,
-        type
-      );
+      const { token } = req.token;
       let valid = null;
       if (type === "player") {
         valid = await PlayersSession.update(
           { logged: false },
-          { where: { player_id: id } }
+          { where: { token: token } }
         );
       } else if (type === "developer") {
         valid = await DevelopersSession.update(
           { logged: false },
-          { where: { developer_id: id } }
+          { where: { token: token } }
         );
       } else if (type === "admin") {
         valid = await AdminsSession.update(
           { logged: false },
-          { where: { admin_id: id } }
+          { where: { token: token } }
         );
       }
       return res.status(200).json({
