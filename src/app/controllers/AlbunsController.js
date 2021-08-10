@@ -69,7 +69,7 @@ class AlbunsController {
   async historic(req, res) {
     try {
       const albums = await Album.findAll({
-        where: [{ player_id: req.user_id }],
+        where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
         include: { association: "figure" },
       });
       return res.status(200).json({
