@@ -62,6 +62,11 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
+      cash: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       score: {
         type: Sequelize.INTEGER,
         allowNull: false,
