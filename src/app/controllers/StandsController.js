@@ -140,7 +140,7 @@ class StandsController {
         });
         return res.status(200).json({
           message: "Figurinha vendida com sucesso",
-          cash: scoreNew,
+          cash: cashNew,
           sales: {
             size,
             pages,
