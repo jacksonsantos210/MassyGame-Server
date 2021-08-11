@@ -69,6 +69,7 @@ routes.get("/albums/show/:id", AuthMidleware, AlbunsController.show);
 routes.get("/albums/player", AuthMidleware, AlbunsController.findByPlayer);
 routes.get("/albums/historic", AuthMidleware, AlbunsController.historic);
 routes.post("/albums/create", AuthMidleware, AlbunsController.store);
+routes.post("/albums/paste", AuthMidleware, AlbunsController.paste);
 //routes.put("/albums/update/:id",AuthMidleware,  AlbunsController.update);
 //routes.delete("/albums/delete:id",AuthMidleware,  AlbunsController.delete);
 
