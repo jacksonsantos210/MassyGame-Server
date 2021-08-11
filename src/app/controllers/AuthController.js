@@ -101,6 +101,7 @@ class AuthController {
   async logout(req, res) {
     try {
       const { type } = req.params;
+      console.log(req);
       const { token } = req.token;
       let valid = null;
       if (type === "player") {
