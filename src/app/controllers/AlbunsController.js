@@ -122,6 +122,23 @@ class AlbunsController {
       });
     }
   }
+
+  async paste(req, res) {
+    try {
+      const album = await Album.update(
+        { pasted: true },
+        { where: { id: req.body.album_id } }
+      );
+      return res.status(200).json({
+        message: "Figurinha colada com sucesso",
+      });
+    } catch (e) {
+      console.error(e);
+      return res.status(400).json({
+        message: "Erro ao tentar salvar figurinha",
+      });
+    }
+  }
 }
 
 module.exports = new AlbunsController();
