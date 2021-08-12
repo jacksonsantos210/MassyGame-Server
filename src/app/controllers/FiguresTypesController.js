@@ -1,3 +1,4 @@
+const Logger = require("../utils/logger");
 const FiguresType = require("../models/FiguresType");
 
 class FiguresTypesController {
