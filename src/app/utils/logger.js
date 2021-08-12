@@ -31,6 +31,7 @@ class Logger {
   game(level, msg) {
     if (level === "error") {
       game.error(msg);
+      console.error(msg);
     } else {
       game.info(msg);
     }
