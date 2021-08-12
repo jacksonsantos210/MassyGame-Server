@@ -1,7 +1,7 @@
 /node_modules
 .Procfile
 npm-degub.log
-.DS_Store
+/*.DS_Store
 /*.env
 yarn.lock
 *.log
