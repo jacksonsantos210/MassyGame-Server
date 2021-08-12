@@ -1,0 +1,12 @@
+const { Router } = require("express");
+const Midleware = require("../app/Midlewares/AuthMidleware");
+const Controller = require("../app/controllers/AlbumsController");
+const AlbumsRoutes = new Router();
+const routes = AlbumsRoutes;
+routes.get("/albums", Midleware, Controller.index);
+routes.get("/albums/show/:id", Midleware, Controller.show);
+routes.get("/albums/player", Midleware, Controller.findByPlayer);
+routes.get("/albums/historic", Midleware, Controller.historic);
+routes.post("/albums/create", Midleware, Controller.store);
+routes.post("/albums/paste", Midleware, Controller.paste);
+module.exports = AlbumsRoutes;
