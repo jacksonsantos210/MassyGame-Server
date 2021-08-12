@@ -75,6 +75,14 @@ class FiguresController {
       });
     }
   }
+
+  async verifyPremier(req, res) {
+    try {
+      return res.status(200).json({ status: "ok" });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 module.exports = new FiguresController();
