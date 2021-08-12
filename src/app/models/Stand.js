@@ -2,7 +2,6 @@ const { Model, DataTypes } = require("sequelize");
 
 class Stand extends Model {
   static init(sequelize) {
-    console.log("APP-> Model: Stand, has been initialized");
     super.init(
       {
         seller: DataTypes.INTEGER,
