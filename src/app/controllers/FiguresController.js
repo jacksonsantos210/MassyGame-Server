@@ -1,3 +1,4 @@
+const Logger = require("../utils/logger");
 const Figure = require("../models/Figure");
 const Premier = require("../models/Premier");
 const FigureSchema = require("../yup/FigureSchema");
