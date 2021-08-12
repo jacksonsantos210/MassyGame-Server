@@ -4,3 +4,4 @@ npm-degub.log
 .DS_Store
 /*.env
 yarn.lock
+*.log
