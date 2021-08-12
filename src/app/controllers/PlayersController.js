@@ -21,6 +21,27 @@ class PlayersController {
     }
   }
 
+  async me(req, res) {
+    var user = null;
+    if (req.user_type === "player")
+      user = await Player.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+        include: { association: "albums" },
+      });
+    if (req.user_type === "admin")
+      user = await Admin.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+      });
+    if (req.user_type === "dev")
+      user = await Developer.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+      });
+    return res.status(200).json(user);
+  }
+
   async show(req, res) {
     try {
       let result = {};
@@ -95,7 +116,7 @@ class PlayersController {
     }
   }
 
-  async acceptRules(req, res) {
+  async rules(req, res) {
     try {
       const player = await Player.update(
         { rules_accept: true },
@@ -112,7 +133,7 @@ class PlayersController {
     }
   }
 
-  async changeAudio(req, res) {
+  async audio(req, res) {
     try {
       const player = await Player.update(
         { audio_play: req.params.state },
