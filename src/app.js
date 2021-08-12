@@ -1,14 +1,24 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const routes = require("./routes");
+const Logger = require("./app/utils/logger");
 
 require("./database");
+//routes
+const Albums = require("./routes/albums.routes");
+const Auth = require("./routes/auth.routes");
+const FiguresTypes = require("./routes/figures-types.routes");
+const Figures = require("./routes/figures.routes");
+const Players = require("./routes/player.routes");
+const Ranks = require("./routes/rank.routes");
+const Stands = require("./routes/stands.routes");
 
 class App {
   constructor() {
     this.app = express();
     this.middlewares();
     this.routes();
+    Logger.game("info", "Server initialized");
   }
 
   middlewares() {
@@ -23,7 +33,13 @@ class App {
   }
 
   routes() {
-    this.app.use(routes);
+    this.app.use(Albums);
+    this.app.use(Auth);
+    this.app.use(FiguresTypes);
+    this.app.use(Figures);
+    this.app.use(Players);
+    this.app.use(Ranks);
+    this.app.use(Stands);
   }
 }
 
