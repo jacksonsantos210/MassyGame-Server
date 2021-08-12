@@ -2,7 +2,6 @@ const { Model, DataTypes } = require("sequelize");
 
 class DevelopersSession extends Model {
   static init(sequelize) {
-    console.log("APP-> Model: DevelopersSession, has been initialized");
     super.init(
       {
         developer_id: DataTypes.INTEGER,
