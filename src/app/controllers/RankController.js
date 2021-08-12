@@ -1,3 +1,4 @@
+const Logger = require("../utils/logger");
 const Player = require("../models/Player");
 
 class RankController {
