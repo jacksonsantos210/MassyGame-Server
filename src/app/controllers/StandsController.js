@@ -1,3 +1,4 @@
+const Logger = require("../utils/logger");
 const Stand = require("../models/Stand");
 const Player = require("../models/Player");
 const Album = require("../models/Album");
