@@ -1,14 +1,15 @@
 const bunyan = require("bunyan");
+console.log();
 const game = bunyan.createLogger({
   name: "game",
   streams: [
     {
       level: "info",
-      path: "/Volumes/Data/_Workspace_/_Projects/3sDigital/Vulkan/MasseyGame/server/logs.log", // log ERROR and above to a file
+      path: "./logs.log", // log ERROR and above to a file
     },
     {
       level: "error",
-      path: "/Volumes/Data/_Workspace_/_Projects/3sDigital/Vulkan/MasseyGame/server/errors.log", // log ERROR and above to a file
+      path: "./errors.log", // log ERROR and above to a file
     },
   ],
 });
@@ -18,11 +19,11 @@ const admin = bunyan.createLogger({
   streams: [
     {
       level: "info",
-      path: "/Volumes/Data/_Workspace_/_Projects/3sDigital/Vulkan/MasseyGame/server/logs.log", // log ERROR and above to a file
+      path: "./logs.log", // log ERROR and above to a file
     },
     {
       level: "error",
-      path: "/Volumes/Data/_Workspace_/_Projects/3sDigital/Vulkan/MasseyGame/server/errors.log", // log ERROR and above to a file
+      path: "./errors.log", // log ERROR and above to a file
     },
   ],
 });
