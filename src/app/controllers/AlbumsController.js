@@ -12,9 +12,8 @@ class AlbumsController {
         albums: albums,
       });
     } catch (error) {
-      console.error(error);
       Logger.game("error", "AlbumsController.index -> ERROR: " + error);
-      return res.status(400).json({
+      return res.status(500).json({
         message: "Erro ao tentar listar albuns",
       });
     }
@@ -32,8 +31,8 @@ class AlbumsController {
         album: album,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
+      Logger.game("error", "AlbumsController.show -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar carregar album",
       });
     }
@@ -54,8 +53,8 @@ class AlbumsController {
         unpasted: albumsUnPasted,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
+      Logger.game("error", "AlbumsController.findByPLayer -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar carregar figurinhas do jogador",
       });
     }
@@ -71,8 +70,8 @@ class AlbumsController {
         albums: albums,
       });
     } catch (error) {
-      console.error(error);
-      return res.status(400).json({
+      Logger.game("error", "AlbumsController.historic -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar carregar figurinhas do jogador",
       });
     }
@@ -86,13 +85,13 @@ class AlbumsController {
         });
       }
       const album = await Album.create(req.body);
-      return res.status(200).json({
+      return res.status(201).json({
         message: "Figurinha salva com sucesso",
         album: album,
       });
-    } catch (e) {
-      console.error(e);
-      return res.status(400).json({
+    } catch (error) {
+      Logger.game("error", "AlbumsController.store -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar salvar figurinha",
       });
     }
@@ -106,13 +105,13 @@ class AlbumsController {
         });
       }
       const album = await Album.update(req.body);
-      return res.status(200).json({
+      return res.status(201).json({
         message: "Figurinha salva com sucesso",
         album: album,
       });
-    } catch (e) {
-      console.error(e);
-      return res.status(400).json({
+    } catch (error) {
+      Logger.game("error", "AlbumsController.update -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar salvar figurinha",
       });
     }
@@ -120,16 +119,16 @@ class AlbumsController {
 
   async paste(req, res) {
     try {
-      const album = await Album.update(
+      await Album.update(
         { pasted: true },
         { where: { id: req.body.album_id } }
       );
       return res.status(200).json({
         message: "Figurinha colada com sucesso",
       });
-    } catch (e) {
-      console.error(e);
-      return res.status(400).json({
+    } catch (error) {
+      Logger.game("error", "AlbumsController.paste -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar salvar figurinha",
       });
     }
