@@ -21,7 +21,6 @@ class AuthController {
       }
       const player = await Player.findOne({
         where: { email: email },
-        include: { association: "albums" },
       });
       if (!player) {
         return res.status(400).json({
