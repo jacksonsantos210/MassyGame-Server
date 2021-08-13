@@ -96,14 +96,13 @@ class FiguresController {
       const premier = await Premier.findOne({
         where: {
           hash: req.body.hash,
-          opened: false,
         },
       });
-      if (!premier) {
+      /* if (!premier) {
         return res.status(400).json({
           message: "Este premio já foi resgatado!",
         });
-      }
+      } */
       return res.status(200).json({
         premier: premier.figure_id,
       });
