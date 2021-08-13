@@ -54,7 +54,7 @@ class FiguresController {
     }
   }
 
-  async getPremier(req, res) {
+  async openPremier(req, res) {
     try {
       const premier = await Premier.findOne({
         where: {
@@ -87,6 +87,30 @@ class FiguresController {
       Logger.game("error", "FiguresController.getPremier -> ERROR: " + error);
       return res.status(500).json({
         message: "Erro ao libear premio",
+      });
+    }
+  }
+
+  async getPremier(req, res) {
+    try {
+      const premier = await Premier.findOne({
+        where: {
+          hash: req.body.hash,
+          opened: false,
+        },
+      });
+      if (!premier) {
+        return res.status(400).json({
+          message: "Este premio já foi resgatado!",
+        });
+      }
+      return res.status(200).json({
+        premier: premier.figure_id,
+      });
+    } catch (error) {
+      Logger.game("error", "FiguresController.getPremier -> ERROR: " + error);
+      return res.status(500).json({
+        message: "Erro ao buscar seu prêmio",
       });
     }
   }
