@@ -130,7 +130,7 @@ class FiguresController {
         "error",
         "FiguresController.verifyPremier -> ERROR: " + error
       );
-      return res.status(201).json({
+      return res.status(500).json({
         message: "Erro ao verificar premio",
       });
     }
