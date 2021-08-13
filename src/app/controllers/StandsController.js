@@ -104,6 +104,7 @@ class StandsController {
     try {
       const { player_id, figure } = await Album.findOne({
         where: { id: req.body.album_id },
+        include: { association: "figure" },
       });
       if (player_id != req.user_id) {
         return res.status(400).json({
@@ -159,6 +160,7 @@ class StandsController {
     try {
       const stand = await Stand.findOne({
         where: { id: req.body.stand_id },
+        include: { association: "figure" },
       });
       if (stand.sold == true) {
         return res.status(200).json({
