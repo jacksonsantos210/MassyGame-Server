@@ -12,7 +12,7 @@ class StandsController {
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
-        include: { association: "figure" },
+
         limit: LIMIT,
         offset: page * LIMIT,
       });
@@ -37,7 +37,6 @@ class StandsController {
         where: {
           id: req.params.id,
         },
-        include: { association: "figure" },
       });
       return res.status(200).json({
         stand: stand,
@@ -76,14 +75,13 @@ class StandsController {
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
-        include: { association: "figure" },
+
         limit: LIMIT,
         offset: page * LIMIT,
       });
       let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        include: { association: "figure" },
       });
       return res.status(200).json({
         sales: {
@@ -106,7 +104,6 @@ class StandsController {
     try {
       const { player_id, figure } = await Album.findOne({
         where: { id: req.body.album_id },
-        include: { association: "figure" },
       });
       if (player_id != req.user_id) {
         return res.status(400).json({
@@ -126,7 +123,7 @@ class StandsController {
         await Player.update({ cash: cashNew }, { where: { id: player_id } });
         const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
-          include: { association: "figure" },
+
           limit: LIMIT,
           offset: 0,
         });
@@ -137,7 +134,6 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
-          include: { association: "figure" },
         });
         return res.status(200).json({
           message: "Figurinha vendida com sucesso",
@@ -163,7 +159,6 @@ class StandsController {
     try {
       const stand = await Stand.findOne({
         where: { id: req.body.stand_id },
-        include: { association: "figure" },
       });
       if (stand.sold == true) {
         return res.status(200).json({
@@ -197,7 +192,7 @@ class StandsController {
         );
         const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
-          include: { association: "figure" },
+
           limit: LIMIT,
           offset: 0,
         });
@@ -208,7 +203,6 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
-          include: { association: "figure" },
         });
         return res.status(201).json({
           message: "Compra efetuada com sucesso",
