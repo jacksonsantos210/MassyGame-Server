@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       date: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
       },
       player_id: {
@@ -29,6 +29,13 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: false,
+      },
+      figure_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "figures", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       created_at: {
         type: Sequelize.DATE,
