@@ -113,16 +113,16 @@ class FiguresController {
           figure_id: sort,
           opened: false,
         });
-        return res.status(200).json({ result: "new", hash: hash });
+        return res.status(200).json({ result: "new", values: hash });
       } else {
         if (premier.opened === false) {
           return res
             .status(200)
-            .json({ premier: "closed", hash: premier.hash });
+            .json({ premier: "closed", values: premier.hash });
         } else {
           return res
             .status(200)
-            .json({ premier: "opened", figure: premier.figure_id });
+            .json({ premier: "opened", values: premier.figure_id });
         }
       }
     } catch (error) {
