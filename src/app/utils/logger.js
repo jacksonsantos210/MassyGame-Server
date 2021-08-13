@@ -41,6 +41,7 @@ class Logger {
   admin(level, msg) {
     if (level === "error") {
       admin.error(msg);
+      console.error(msg);
     } else {
       admin.info(msg);
     }
