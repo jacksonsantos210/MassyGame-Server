@@ -98,11 +98,6 @@ class FiguresController {
           hash: req.body.hash,
         },
       });
-      /* if (!premier) {
-        return res.status(400).json({
-          message: "Este premio já foi resgatado!",
-        });
-      } */
       return res.status(200).json({
         premier: premier.figure_id,
       });
