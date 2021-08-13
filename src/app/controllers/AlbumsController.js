@@ -25,7 +25,7 @@ class AlbumsController {
         where: {
           id: req.params.id,
         },
-        include: { association: "figure" },
+        /*   include: { association: "figure" }, */
       });
       return res.status(200).json({
         album: album,
@@ -42,11 +42,11 @@ class AlbumsController {
     try {
       const albumsPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: true }, { sale: false }],
-        include: { association: "figure" },
+        /*     include: { association: "figure" }, */
       });
       const albumsUnPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        include: { association: "figure" },
+        /*  include: { association: "figure" }, */
       });
       return res.status(200).json({
         pasted: albumsPasted,
@@ -64,7 +64,7 @@ class AlbumsController {
     try {
       const albums = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        include: { association: "figure" },
+        /*  include: { association: "figure" }, */
       });
       return res.status(200).json({
         albums: albums,
