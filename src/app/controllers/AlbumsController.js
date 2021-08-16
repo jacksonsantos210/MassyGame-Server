@@ -7,7 +7,7 @@ class AlbumsController {
   async index(req, res) {
     try {
       Logger.game("info", "AlbumsController.index -> called");
-      const albums = await Album.findAll({ order: ["id", "asc"] });
+      const albums = await Album.findAll();
       return res.status(200).json({
         albums: albums,
       });
