@@ -80,7 +80,7 @@ class StandsController {
       let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        order: ["figure_id", "asc"],
+        order: [["figure_id", "ASC"]],
       });
       return res.status(200).json({
         sales: {
@@ -133,7 +133,7 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
-          order: ["figure_id", "asc"],
+          order: [["figure_id", "ASC"]],
         });
         return res.status(200).json({
           message: "Figurinha vendida com sucesso",
@@ -203,7 +203,7 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
-          order: ["figure_id", "asc"],
+          order: [["figure_id", "ASC"]],
         });
         return res.status(201).json({
           message: "Compra efetuada com sucesso",
