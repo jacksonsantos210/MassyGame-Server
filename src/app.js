@@ -5,6 +5,7 @@ const Logger = require("./app/utils/logger");
 
 require("./database");
 //routes
+const General = require("./routes/general.routes");
 const Albums = require("./routes/albums.routes");
 const Auth = require("./routes/auth.routes");
 const FiguresTypes = require("./routes/figures-types.routes");
@@ -33,6 +34,7 @@ class App {
   }
 
   routes() {
+    this.app.use(General);
     this.app.use(Albums);
     this.app.use(Auth);
     this.app.use(FiguresTypes);
