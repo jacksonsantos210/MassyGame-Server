@@ -1,7 +1,7 @@
 const Logger = require("../utils/logger");
 const Player = require("../models/Player");
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 class RankController {
   async index(req, res) {
@@ -35,7 +35,7 @@ class RankController {
         },
       });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "RankController.index -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar listar rank",
       });
