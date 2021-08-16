@@ -7,7 +7,7 @@ class AlbumsController {
   async index(req, res) {
     try {
       Logger.game("info", "AlbumsController.index -> called");
-      const albums = await Album.findAll();
+      const albums = await Album.findAll({ order: ["id", "asc"] });
       return res.status(200).json({
         albums: albums,
       });
@@ -42,11 +42,11 @@ class AlbumsController {
     try {
       const albumsPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: true }, { sale: false }],
-        /*     include: { association: "figure" }, */
+        order: ["figure_id", "asc"],
       });
       const albumsUnPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        /*  include: { association: "figure" }, */
+        order: ["figure_id", "asc"],
       });
       return res.status(200).json({
         pasted: albumsPasted,
