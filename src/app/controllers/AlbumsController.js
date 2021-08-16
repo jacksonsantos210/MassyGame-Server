@@ -42,11 +42,11 @@ class AlbumsController {
     try {
       const albumsPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: true }, { sale: false }],
-        order: ["figure_id", "asc"],
+        order: [["figure_id", "ASC"]],
       });
       const albumsUnPasted = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        order: ["figure_id", "asc"],
+        order: [["figure_id", "ASC"]],
       });
       return res.status(200).json({
         pasted: albumsPasted,
@@ -64,7 +64,6 @@ class AlbumsController {
     try {
       const albums = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
-        /*  include: { association: "figure" }, */
       });
       return res.status(200).json({
         albums: albums,
