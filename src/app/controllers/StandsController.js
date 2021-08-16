@@ -12,7 +12,6 @@ class StandsController {
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
-
         limit: LIMIT,
         offset: page * LIMIT,
       });
@@ -75,13 +74,13 @@ class StandsController {
       page = parseInt(page - 1);
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: { sold: false },
-
         limit: LIMIT,
         offset: page * LIMIT,
       });
       let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
+        order: ["figure_id", "asc"],
       });
       return res.status(200).json({
         sales: {
@@ -124,7 +123,6 @@ class StandsController {
         await Player.update({ cash: cashNew }, { where: { id: player_id } });
         const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
-
           limit: LIMIT,
           offset: 0,
         });
@@ -135,6 +133,7 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
+          order: ["figure_id", "asc"],
         });
         return res.status(200).json({
           message: "Figurinha vendida com sucesso",
@@ -194,7 +193,6 @@ class StandsController {
         );
         const { count: size, rows: stands } = await Stand.findAndCountAll({
           where: { sold: false },
-
           limit: LIMIT,
           offset: 0,
         });
@@ -205,6 +203,7 @@ class StandsController {
             { pasted: false },
             { sale: false },
           ],
+          order: ["figure_id", "asc"],
         });
         return res.status(201).json({
           message: "Compra efetuada com sucesso",
