@@ -57,6 +57,7 @@ class PlayersController {
         score: player.score,
         premiers: premiers,
         stands: sellers + solds,
+        videos: 0,
       });
     } catch (error) {
       Logger.game("error", "PlayersController.myData -> ERROR: " + error);
