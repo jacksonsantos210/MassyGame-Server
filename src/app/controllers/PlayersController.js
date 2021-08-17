@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth");
 const Player = require("../models/Player");
+const Premier = require("../models/Premier");
+const Stand = require("../models/Stand");
 const PlayerSchema = require("../yup/PlayerSchema");
 
 class PlayersController {
@@ -15,53 +17,64 @@ class PlayersController {
         players: players,
       });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "PlayersController.index -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
       });
     }
   }
 
-  async me(req, res) {
-    var user = null;
-    if (req.user_type === "player")
-      user = await Player.findOne({
-        where: { id: req.user_id },
-        attributes: { exclude: ["password"] },
-        include: { association: "albums" },
-      });
-    if (req.user_type === "admin")
-      user = await Admin.findOne({
-        where: { id: req.user_id },
-        attributes: { exclude: ["password"] },
-      });
-    if (req.user_type === "dev")
-      user = await Developer.findOne({
-        where: { id: req.user_id },
-        attributes: { exclude: ["password"] },
-      });
-    return res.status(200).json(user);
-  }
-
-  async show(req, res) {
+  async myData(req, res) {
     try {
-      let result = {};
       const player = await Player.findOne({
         where: { id: req.user_id },
         attributes: { exclude: ["password"] },
       });
-      if (player) {
-        result = {
-          player: player,
-        };
-      } else {
-        result = {
-          message: "not found",
-        };
-      }
-      return res.status(200).json(result);
+      const { count: premiers } = await Premier.findAndCountAll({
+        where: { player_id: req.user_id, opened: true },
+      });
+      const { count: sellers } = await Stand.findAndCountAll({
+        where: { seller: req.user_id },
+      });
+      const { count: solds } = await Stand.findAndCountAll({
+        where: { sold_when: req.user_id },
+      });
+
+      return res.status(200).json({
+        name: player.name,
+        email: player.email,
+        phone: player.phone,
+        birth: player.birth,
+        country: player.country,
+        provincy: player.provincy,
+        city: player.city,
+        address: player.address,
+        language: player.language,
+        photo: player.photo,
+        audio_play: player.audio_play,
+        rules_accept: player.rules_accept,
+        cash: player.cash,
+        score: player.score,
+        premiers: premiers,
+        stands: sellers + solds,
+      });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "PlayersController.myData -> ERROR: " + error);
+      return res.status(500).json({
+        message: "Erro ao tentar retornar seus dados",
+      });
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const player = await Player.findOne({
+        where: { id: req.user_id },
+        attributes: { exclude: ["password"] },
+      });
+      return res.status(200).json(player);
+    } catch (error) {
+      Logger.game("error", "PlayersController.show -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar listar jogadores",
       });
@@ -80,14 +93,13 @@ class PlayersController {
       req.body.password = undefined;
       return res.status(200).json({
         message: "Jogador Cadastrado com sucesso",
-
         player: player,
         token: jwt.sign({ id: player.id }, config.secret, {
           expiresIn: config.expireIn,
         }),
       });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "PlayersController.store -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar inserir jogador",
       });
@@ -110,7 +122,7 @@ class PlayersController {
         player: player,
       });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "PlayersController.update -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar atualizar jogador",
       });
@@ -127,7 +139,7 @@ class PlayersController {
       );
       return res.status(200).json({ message: "OK" });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "PlayersController.rules -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar atualizar jogador",
       });
@@ -144,7 +156,7 @@ class PlayersController {
       );
       return res.status(200).json({ message: "OK" });
     } catch (error) {
-      console.error(error);
+      cLogger.game("error", "PlayersController.audio -> ERROR: " + error);
       return res.status(400).json({
         message: "Erro ao tentar atualizar jogador",
       });
