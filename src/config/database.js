@@ -9,6 +9,6 @@ module.exports = {
   define: {
     timestamps: true,
     underscored: true,
-    logging: process.env.DEBUG || false,
+    // logging: process.env.DEBUG || false,
   },
 };
