@@ -20,6 +20,10 @@ class Figure extends Model {
     this.hasMany(models.Album, { foreingKey: "figure_id", as: "albums" });
     this.hasMany(models.Stand, { foreingKey: "figure_id", as: "stands" });
     this.hasMany(models.Premier, { foreingKey: "figure_id", as: "premiers" });
+    this.hasMany(models.InfluencersToken, {
+      foreingKey: "figure_id",
+      as: "influencers",
+    });
   }
 }
 
