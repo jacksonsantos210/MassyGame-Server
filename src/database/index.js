@@ -7,6 +7,8 @@ const AdminsSession = require("../app/models/AdminsSession");
 const Album = require("../app/models/Album");
 const Developer = require("../app/models/Developer");
 const DevelopersSession = require("../app/models/DevelopersSession");
+const Influencer = require("../app/models/Influencer");
+const InfluencersToken = require("../app/models/InfluencersToken");
 const Figure = require("../app/models/Figure");
 const Player = require("../app/models/Player");
 const PlayersSession = require("../app/models/PlayersSession");
@@ -21,6 +23,8 @@ AdminsSession.init(connection);
 Album.init(connection);
 Developer.init(connection);
 DevelopersSession.init(connection);
+Influencer.init(connection);
+InfluencersToken.init(connection);
 FiguresType.init(connection);
 Figure.init(connection);
 Player.init(connection);
@@ -29,9 +33,13 @@ Premier.init(connection);
 Stand.init(connection);
 //Associates
 Album.associate(connection.models);
+Influencer.associate(connection.models);
+InfluencersToken.associate(connection.models);
 Figure.associate(connection.models);
 Player.associate(connection.models);
 Stand.associate(connection.models);
 Premier.associate(connection.models);
 
 module.exports = connection;
+
+// influencers/rescue
