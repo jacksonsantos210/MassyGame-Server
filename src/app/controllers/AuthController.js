@@ -42,7 +42,8 @@ class AuthController {
       const ipCliente =
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
+        req.connection.socket.remoteAddress ||
+        null;
       await PlayersSession.create({
         player_id: player.id,
         token: token,
