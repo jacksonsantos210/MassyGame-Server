@@ -4,7 +4,7 @@ const PlayersSession = require("../models/PlayersSession");
 const Developer = require("../models/Developer");
 const DevelopersSession = require("../models/DevelopersSession");
 const Admin = require("../models/Admin");
-const AdminsSession = require("../models/AdminsSession");
+const AdminSession = require("../models/AdminsSession");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth");
@@ -59,7 +59,62 @@ class AuthController {
         player: player,
       });
     } catch (error) {
-      console.error(error);
+      Logger.game("error", "AlbumsController.playerLogIn -> ERROR: " + error);
+      return res.status(400).json({
+        message: "Ops! Falha ao validar seus dados",
+      });
+    }
+  }
+
+  async adminLogIn(req, res) {
+    try {
+      const { email, password } = req.body;
+      if (!(await AuthSchema.isValid(req.body))) {
+        return res.status(400).json({
+          message: "Ops! Dados Inválidos.",
+        });
+      }
+      const admin = await Admin.findOne({
+        where: { email: email },
+      });
+      if (!admin) {
+        return res.status(400).json({
+          message: "Ops! Dados incorretos ou administrador inexistente.  001",
+        });
+      }
+      if (!(await bcrypt.compare(password, admin.password))) {
+        return res.status(400).json({
+          message: "Ops! Dados incorretos ou administrador inexistente.  002",
+        });
+      }
+      const token = jwt.sign(
+        { id: admin.id, user_type: "admin" },
+        config.secret,
+        {
+          expiresIn: config.expireIn,
+        }
+      );
+      const ipCliente =
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress ||
+        null;
+      await AdminSession.create({
+        admin_id: admin.id,
+        token: token,
+        ip_address: ipCliente,
+        user_agent: req.get("user-agent"),
+        payload: "",
+        logged: true,
+      });
+
+      admin.password = undefined;
+      return res.status(200).json({
+        token: token,
+        admin: admin,
+      });
+    } catch (error) {
+      Logger.admin("error", "AlbumsController.adminLogIn -> ERROR: " + error);
       return res.status(400).json({
         message: "Ops! Falha ao validar seus dados",
       });
@@ -90,7 +145,11 @@ class AuthController {
         result: valid,
       });
     } catch (error) {
-      console.error(error);
+      if (req.user_type === "player") {
+        Logger.game("error", "AlbumsController.logout -> ERROR: " + error);
+      } else {
+        Logger.admin("error", "AlbumsController.logout -> ERROR: " + error);
+      }
       return res.status(500).json({
         message: "Ops! Falha ao desconectar",
       });
