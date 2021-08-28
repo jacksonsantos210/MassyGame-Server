@@ -7,6 +7,7 @@ require("./database");
 //routes
 const General = require("./routes/general.routes");
 const Albums = require("./routes/albums.routes");
+const Admins = require("./routes/admin.routes");
 const Auth = require("./routes/auth.routes");
 const Influencers = require("./routes/influencers.routes");
 const InfluencersTokens = require("./routes/influencers-tokens.routes");
@@ -38,6 +39,7 @@ class App {
   routes() {
     this.app.use(General);
     this.app.use(Albums);
+    this.app.use(Admins);
     this.app.use(Auth);
     this.app.use(Influencers);
     this.app.use(InfluencersTokens);
