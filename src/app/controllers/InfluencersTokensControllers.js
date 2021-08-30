@@ -43,6 +43,23 @@ class InfluencersTokensController {
     }
   }
 
+  async useds(req, res) {
+    try {
+      const tokens = await InfluencersToken.findAll({
+        where: { opened: true },
+      });
+      res.status(200).json({ tokens: tokens });
+    } catch (error) {
+      Logger.game(
+        "error",
+        "InfluencersTokensController.useds -> ERROR: " + error
+      );
+      res.status(500).json({
+        message: "Falha ao carregar o token",
+      });
+    }
+  }
+
   async store(req, res) {
     try {
       if (!(await InfluencersTokensSchema)) {
