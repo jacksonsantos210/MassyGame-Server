@@ -10,7 +10,9 @@ const FigureSchema = require("../yup/FigureSchema");
 class FiguresController {
   async index(req, res) {
     try {
-      const figures = await Figure.findAll();
+      const figures = await Figure.findAll({
+        include: { association: "types" },
+      });
       return res.status(200).json({
         figures: figures,
       });
