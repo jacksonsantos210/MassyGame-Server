@@ -12,6 +12,10 @@ class FiguresType extends Model {
       }
     );
   }
+
+  static associate(models) {
+    this.belongsTo(models.Figure, { foreingKey: "type", as: "figure" });
+  }
 }
 
 module.exports = FiguresType;
