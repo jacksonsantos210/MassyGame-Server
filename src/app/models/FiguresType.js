@@ -14,7 +14,8 @@ class FiguresType extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Figure, { foreingKey: "type", as: "figure" });
+    //this.belongsTo(models.Figure, { foreingKey: "type_id", as: "figure" });
+    this.hasOne(models.Figure, { foreingKey: "type_id", as: "type" });
   }
 }
 
