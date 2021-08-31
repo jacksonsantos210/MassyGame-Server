@@ -77,14 +77,14 @@ class InfluencersTokensController {
       tk = tk + Math.floor(Math.random() * (60 - 0) + 0) + "M";
       let items = [];
       const type3 = await Figure.findAll({
-        where: { type: 3 },
+        where: { type_id: 3 },
         attributes: { exclude: ["image"] },
       });
       type3.map((itm) => {
         items.push(itm);
       });
       const type4 = await Figure.findAll({
-        where: { type: 4 },
+        where: { type_id: 4 },
         attributes: { exclude: ["image"] },
       });
       type4.map((itm) => {
