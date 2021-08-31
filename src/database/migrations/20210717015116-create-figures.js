@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
-      type: {
+      type_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1,
