@@ -5,7 +5,7 @@ module.exports = {
   username: process.env.DB_USERNAME || "root",
   password: process.env.DB_PASSWORD || "DEV1@jssolucoes",
   database: process.env.DB_DATABASE || "masseygame_dev",
-  logging: false,
+  //logging: false,
   define: {
     timestamps: true,
     underscored: true,
