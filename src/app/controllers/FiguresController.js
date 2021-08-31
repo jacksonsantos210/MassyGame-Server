@@ -11,7 +11,8 @@ class FiguresController {
   async index(req, res) {
     try {
       const figures = await Figure.findAll({
-        include: { association: "types" },
+        attributes: { exclude: ["image"] },
+        include: { association: "type" },
       });
       return res.status(200).json({
         figures: figures,
