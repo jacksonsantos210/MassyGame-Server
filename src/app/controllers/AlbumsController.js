@@ -6,7 +6,7 @@ const Player = require("../models/Player");
 class AlbumsController {
   async index(req, res) {
     try {
-      Logger.game("info", "AlbumsController.index -> called");
+      //Logger.game("info", "AlbumsController.index -> called");
       const albums = await Album.findAll();
       return res.status(200).json({
         albums: albums,
