@@ -35,6 +35,7 @@ Stand.init(connection);
 Album.associate(connection.models);
 Influencer.associate(connection.models);
 InfluencersToken.associate(connection.models);
+FiguresType.associate(connection.models);
 Figure.associate(connection.models);
 Player.associate(connection.models);
 Stand.associate(connection.models);
