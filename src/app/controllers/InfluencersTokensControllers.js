@@ -31,7 +31,7 @@ class InfluencersTokensController {
   async show(req, res) {
     try {
       const token = await InfluencersToken.findOne({
-        where: { id: req.params.id },
+        where: { token: req.params.token },
       });
       res.status(200).json({ token: token });
     } catch (error) {
