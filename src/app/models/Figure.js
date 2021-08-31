@@ -7,7 +7,7 @@ class Figure extends Model {
         name: DataTypes.STRING,
         description: DataTypes.STRING,
         coin: DataTypes.INTEGER,
-        type: DataTypes.INTEGER,
+        type_id: DataTypes.INTEGER,
         image: DataTypes.STRING,
       },
       {
@@ -17,8 +17,11 @@ class Figure extends Model {
   }
 
   static associate(models) {
+    this.belongsTo(models.FiguresType, { foreingKey: "type_id", as: "type" });
+
+    //this.hasOne(models.FiguresType, { foreingKey: "type_id", as: "types" });
+
     this.hasMany(models.Album, { foreingKey: "figure_id", as: "albums" });
-    this.hasMany(models.FiguresType, { foreingKey: "type", as: "types" });
     this.hasMany(models.Stand, { foreingKey: "figure_id", as: "stands" });
     this.hasMany(models.Premier, { foreingKey: "figure_id", as: "premiers" });
     this.hasMany(models.InfluencersToken, {
