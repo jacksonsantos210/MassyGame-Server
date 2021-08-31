@@ -70,10 +70,10 @@ class PlayersController {
   async show(req, res) {
     try {
       const player = await Player.findOne({
-        where: { id: req.user_id },
+        where: { id: req.params.id },
         attributes: { exclude: ["password"] },
       });
-      return res.status(200).json(player);
+      return res.status(200).json({ player: player });
     } catch (error) {
       Logger.game("error", "PlayersController.show -> ERROR: " + error);
       return res.status(400).json({
