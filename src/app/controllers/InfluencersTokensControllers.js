@@ -11,7 +11,9 @@ const InfluencersTokensSchema = require("../yup/InfluencersTokensSchema");
 class InfluencersTokensController {
   async index(req, res) {
     try {
-      const tokens = await InfluencersToken.findAll();
+      const tokens = await InfluencersToken.findAll({
+        include: { association: "influencer" },
+      });
       return res.status(200).json({
         tokens: tokens,
       });
