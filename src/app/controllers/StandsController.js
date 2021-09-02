@@ -1,9 +1,12 @@
+const sequelize = require("Sequelize");
 const Logger = require("../utils/logger");
 const Stand = require("../models/Stand");
 const Player = require("../models/Player");
 const Album = require("../models/Album");
+const Figure = require("../models/Figure");
 
 const LIMIT = 12;
+const Op = sequelize.Op;
 
 class StandsController {
   async index(req, res) {
@@ -71,12 +74,35 @@ class StandsController {
   async findByPlayer(req, res) {
     try {
       let { page = 1 } = req.query;
+      let { type = null } = req.query;
+      let { name = null } = req.query;
       page = parseInt(page - 1);
+
+      let where1,
+        where2 = {};
+      if (type !== null) {
+        where1 = {
+          "$figure.type_id$": type,
+        };
+      }
+      if (name !== null) {
+        where2 = {
+          "$figure.name$": { [Op.like]: `%${name}%` },
+        };
+      }
+
       const { count: size, rows: stands } = await Stand.findAndCountAll({
-        where: { sold: false },
+        where: [{ sold: false }, where1, where2],
+        //include: { association: "figure" },
+        include: {
+          model: Figure,
+          as: "figure",
+          attributes: { exclude: ["image"] },
+        },
         limit: LIMIT,
         offset: page * LIMIT,
       });
+
       let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
