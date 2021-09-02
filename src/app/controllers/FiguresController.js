@@ -7,6 +7,8 @@ const Player = require("../models/Player");
 const Album = require("../models/Album");
 const FigureSchema = require("../yup/FigureSchema");
 
+const DATE_TOP_PREMIERS = "04/10/2021";
+
 class FiguresController {
   async index(req, res) {
     try {
@@ -126,7 +128,40 @@ class FiguresController {
           `user-${req.user_id}-${moment().format("YYYYMMDDHHmmSS")}`,
           10
         );
-        let sort = Math.floor(Math.random() * (60 - 0) + 0);
+        let items = [];
+        const type1 = await Figure.findAll({
+          where: { type_id: 1 },
+          attributes: { exclude: ["image"] },
+        });
+        type1.map((itm) => {
+          items.push(itm);
+        });
+        const type2 = await Figure.findAll({
+          where: { type_id: 2 },
+          attributes: { exclude: ["image"] },
+        });
+        type2.map((itm) => {
+          items.push(itm);
+        });
+
+        let thisMoment = moment().format("DD/MM/yyyy");
+        if (thisMoment >= DATE_TOP_PREMIERS) {
+          const type3 = await Figure.findAll({
+            where: { type_id: 3 },
+            attributes: { exclude: ["image"] },
+          });
+          type3.map((itm) => {
+            items.push(itm);
+          });
+          const type4 = await Figure.findAll({
+            where: { type_id: 4 },
+            attributes: { exclude: ["image"] },
+          });
+          type4.map((itm) => {
+            items.push(itm);
+          });
+        }
+        let sort = items[Math.floor(Math.random() * (items.length - 0) + 0)];
         await Premier.create({
           date: moment().format("YYYY-MM-DD"),
           player_id: req.user_id,
