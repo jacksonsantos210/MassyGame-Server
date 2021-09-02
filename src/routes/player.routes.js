@@ -10,4 +10,5 @@ routes.post("/players/register", Controller.store); //Função Pública de Regis
 routes.post("/players/update", Midleware, Controller.update);
 routes.get("/players/audio/:state", Midleware, Controller.audio);
 routes.get("/players/rules", Midleware, Controller.rules);
+routes.get("/players/recovery", Midleware, Controller.recovery);
 module.exports = PlayerRoutes;
