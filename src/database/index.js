@@ -15,6 +15,7 @@ const PlayersSession = require("../app/models/PlayersSession");
 const Premier = require("../app/models/Premier");
 const Stand = require("../app/models/Stand");
 const FiguresType = require("../app/models/FiguresType");
+const PlayersToken = require("../app/models/PlayersToken");
 
 //start connection
 const connection = new Sequelize(dbConfig);
@@ -28,6 +29,7 @@ InfluencersToken.init(connection);
 FiguresType.init(connection);
 Figure.init(connection);
 Player.init(connection);
+PlayersToken.init(connection);
 PlayersSession.init(connection);
 Premier.init(connection);
 Stand.init(connection);
@@ -38,6 +40,7 @@ InfluencersToken.associate(connection.models);
 FiguresType.associate(connection.models);
 Figure.associate(connection.models);
 Player.associate(connection.models);
+PlayersToken.init(connection);
 Stand.associate(connection.models);
 Premier.associate(connection.models);
 
