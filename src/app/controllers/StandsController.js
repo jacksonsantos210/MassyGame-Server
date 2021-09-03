@@ -73,19 +73,18 @@ class StandsController {
 
   async findByPlayer(req, res) {
     try {
-      let { page = 1 } = req.query;
-      let { type = 0 } = req.query;
-      let { name = null } = req.query;
+      let { page = 1, type, name = null } = req.query;
+      /*    let { type } = req.query;
+      let { name = null } = req.query; */
       page = parseInt(page - 1);
-
       let where1,
         where2 = {};
-      if (type !== 0) {
+      if (parseInt(type) !== 0) {
         where1 = {
           "$figure.type_id$": parseInt(type),
         };
       }
-      if (name !== null) {
+      if (name !== null && name.legth > 0) {
         where2 = {
           "$figure.name$": { [Op.like]: `%${name}%` },
         };
