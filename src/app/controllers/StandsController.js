@@ -84,7 +84,7 @@ class StandsController {
           "$figure.type_id$": parseInt(type),
         };
       }
-      if (name !== null && name.legth > 0) {
+      if (name !== null && name.length > 0) {
         where2 = {
           "$figure.name$": { [Op.like]: `%${name}%` },
         };
