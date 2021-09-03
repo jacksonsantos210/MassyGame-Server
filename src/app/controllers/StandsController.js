@@ -1,4 +1,4 @@
-const sequelize = require("Sequelize");
+const sequelize = require("sequelize");
 const Logger = require("../utils/logger");
 const Stand = require("../models/Stand");
 const Player = require("../models/Player");
