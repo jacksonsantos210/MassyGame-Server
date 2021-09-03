@@ -10,7 +10,7 @@ routes.post("/players/register", Controller.store); //Função Pública de Regis
 routes.post("/players/update", Midleware, Controller.update);
 routes.get("/players/audio/:state", Midleware, Controller.audio);
 routes.get("/players/rules", Midleware, Controller.rules);
-routes.post("/players/recovery", Midleware, Controller.recovery);
-routes.post("/players/token-validade", Midleware, Controller.validateToken);
-routes.post("/players/change-password", Midleware, Controller.changePassword);
+routes.post("/players/recovery", Controller.recovery);
+routes.post("/players/token-validade", Controller.validateToken);
+routes.post("/players/change-password", Controller.changePassword);
 module.exports = PlayerRoutes;
