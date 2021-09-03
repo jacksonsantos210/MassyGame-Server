@@ -74,13 +74,13 @@ class StandsController {
   async findByPlayer(req, res) {
     try {
       let { page = 1 } = req.query;
-      let { type = null } = req.query;
+      let { type = 0 } = req.query;
       let { name = null } = req.query;
       page = parseInt(page - 1);
 
       let where1,
         where2 = {};
-      if (type !== null) {
+      if (type !== 0) {
         where1 = {
           "$figure.type_id$": parseInt(type),
         };
