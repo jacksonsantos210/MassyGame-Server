@@ -82,7 +82,7 @@ class StandsController {
         where2 = {};
       if (type !== null) {
         where1 = {
-          "$figure.type_id$": type,
+          "$figure.type_id$": parseInt(type),
         };
       }
       if (name !== null) {
@@ -90,6 +90,7 @@ class StandsController {
           "$figure.name$": { [Op.like]: `%${name}%` },
         };
       }
+      console.log(req.query);
 
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: [{ sold: false }, where1, where2],
