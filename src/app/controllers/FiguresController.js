@@ -145,7 +145,10 @@ class FiguresController {
         });
 
         let thisMoment = moment().format("DD/MM/yyyy");
+        console.log(thisMoment);
+        console.log(DATE_TOP_PREMIERS);
         if (thisMoment >= DATE_TOP_PREMIERS) {
+          console.log("passou");
           const type3 = await Figure.findAll({
             where: { type_id: 3 },
             attributes: { exclude: ["image"] },
