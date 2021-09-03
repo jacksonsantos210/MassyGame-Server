@@ -212,7 +212,7 @@ class PlayersController {
         .catch((error) => {
           Logger.game("error", "PlayersController.recovery -> ERROR: " + error);
           return res.status(400).json({
-            message: "Erro ao processar o peido de recuperação",
+            message: "Erro ao processar o pedido de recuperação",
           });
         });
     } catch (error) {
