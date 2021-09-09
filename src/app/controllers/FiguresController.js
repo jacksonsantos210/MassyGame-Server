@@ -7,7 +7,7 @@ const Player = require("../models/Player");
 const Album = require("../models/Album");
 const FigureSchema = require("../yup/FigureSchema");
 
-const DATE_TOP_PREMIERS = "04/10/2021";
+const DATE_TOP_PREMIERS = new Date("2021-10-15");
 
 class FiguresController {
   async index(req, res) {
@@ -144,11 +144,19 @@ class FiguresController {
           items.push(itm);
         });
 
-        let thisMoment = moment().format("DD/MM/yyyy");
-        console.log(thisMoment);
-        console.log(DATE_TOP_PREMIERS);
-        if (thisMoment >= DATE_TOP_PREMIERS) {
-          console.log("passou");
+        let thisMoment = new Date();
+        var a = moment([
+          DATE_TOP_PREMIERS.getUTCFullYear(),
+          DATE_TOP_PREMIERS.getUTCMonth(),
+          DATE_TOP_PREMIERS.getUTCDay(),
+        ]);
+        var b = moment([
+          thisMoment.getUTCFullYear(),
+          thisMoment.getUTCMonth(),
+          thisMoment.getUTCDay(),
+        ]);
+        let dateDiff = a.diff(b, "days");
+        if (dateDiff <= 0) {
           const type3 = await Figure.findAll({
             where: { type_id: 3 },
             attributes: { exclude: ["image"] },
@@ -164,12 +172,12 @@ class FiguresController {
             items.push(itm);
           });
         }
-        let sort = items[Math.floor(Math.random() * (items.length - 0) + 0)];
+        let { id } = items[Math.floor(Math.random() * (items.length - 0) + 0)];
         await Premier.create({
           date: moment().format("YYYY-MM-DD"),
           player_id: req.user_id,
           hash: hash,
-          figure_id: sort,
+          figure_id: id,
           opened: false,
         });
         return res.status(200).json({ result: "new", values: hash });
