@@ -1,4 +1,4 @@
-import Mail from "../../lib/Mail";
+const Mail = require("../../lib/Mail");
 
 export default {
   key: "RecoveryPlayerMail",

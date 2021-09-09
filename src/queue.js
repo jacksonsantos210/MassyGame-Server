@@ -1,5 +1,5 @@
-import "dotenv/config";
-import Queue from "./lib/Queue";
-import RecoveryPlayerMail from "./app/jobs/RecoveryPlayerMail";
+require("dotenv/config");
+const Queue = require("./lib/Queue");
+const RecoveryPlayerMail = require("./app/jobs/RecoveryPlayerMail");
 
 Queue.process(RecoveryPlayerMail.handle);

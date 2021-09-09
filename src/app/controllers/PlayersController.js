@@ -9,7 +9,7 @@ const PlayersToken = require("../models/PlayersToken");
 const Premier = require("../models/Premier");
 const Stand = require("../models/Stand");
 
-import Queue from "../../lib/Queue";
+const Queue = require("../../lib/Queue");
 
 class PlayersController {
   async index(req, res) {

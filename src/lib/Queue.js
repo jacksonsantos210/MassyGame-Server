@@ -1,6 +1,6 @@
-import Queue from "bull";
-import redisConfig from "../config/redis";
-import RecoveryPlayer from "../app/jobs/RecoveryPlayerMail";
+const Queue = require("bull");
+const redisConfig = require("../config/redis");
+const RecoveryPlayer = require("../app/jobs/RecoveryPlayerMail");
 
 const RecoveryPlayerQueue = new Queue(RecoveryPlayer.key, redisConfig);
 
