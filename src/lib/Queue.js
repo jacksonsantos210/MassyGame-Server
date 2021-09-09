@@ -4,4 +4,4 @@ const RecoveryPlayer = require("../app/jobs/RecoveryPlayerMail");
 
 const RecoveryPlayerQueue = new Queue(RecoveryPlayer.key, redisConfig);
 
-export default RecoveryPlayerQueue;
+module.exports = RecoveryPlayerQueue;

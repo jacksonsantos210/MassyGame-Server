@@ -1,6 +1,6 @@
 const Mail = require("../../lib/Mail");
 
-export default {
+module.exports = {
   key: "RecoveryPlayerMail",
   async handle({ data }) {
     const { player, token } = data;
