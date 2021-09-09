@@ -6,10 +6,12 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev:server": "nodemon src/server.js",
+    "dev:queue": "nodemon src/queue.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bull": "^3.29.1",
     "bunyan": "^1.8.15",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
