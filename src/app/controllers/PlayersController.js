@@ -1,7 +1,6 @@
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
 const Logger = require("../utils/logger");
 const config = require("../../config/auth");
 const PlayerSchema = require("../yup/PlayerSchema");
@@ -9,6 +8,8 @@ const Player = require("../models/Player");
 const PlayersToken = require("../models/PlayersToken");
 const Premier = require("../models/Premier");
 const Stand = require("../models/Stand");
+
+import Queue from "../../lib/Queue";
 
 class PlayersController {
   async index(req, res) {
@@ -167,7 +168,7 @@ class PlayersController {
     }
   }
 
-  async recovery(req, res) {
+  /* async recovery(req, res) {
     try {
       const player = await Player.findOne({
         where: { email: req.body.email },
@@ -218,6 +219,36 @@ class PlayersController {
     } catch (error) {
       Logger.game("error", "PlayersController.recovery -> ERROR: " + error);
       return res.status(400).json({
+        message: "Erro ao tentar gerar token de recuperação",
+      });
+    }
+  } */
+
+  async recovery(req, res) {
+    try {
+      const { email } = req.body;
+      const player = await Player.findOne({
+        where: { email: email },
+      });
+      if (!player) {
+        return res.status(400).json({
+          message: "Não encontramos uma conta associada a este email!",
+        });
+      }
+      let token = await bcrypt.hash(player.email, 10);
+      await PlayersToken.create({
+        player_id: player.id,
+        token: token,
+      });
+      //adicionar recuperação de eemail na fila
+      await Queue.add({ player, token });
+
+      return res.status(200).json({
+        message: "Recuperação em processamento, verifique seu e-mail",
+      });
+    } catch (error) {
+      Logger.game("error", "PlayersController.recovery -> ERROR: " + error);
+      return res.status(500).json({
         message: "Erro ao tentar gerar token de recuperação",
       });
     }
