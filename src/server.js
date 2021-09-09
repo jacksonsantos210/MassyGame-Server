@@ -1,6 +1,6 @@
-require("dotenv/config");
-const http = require("http");
-const app = require("./app");
+import "dotenv/config";
+import http from "http";
+import app from "./app";
 
 var PORT = process.env.PORT || 3333;
 
