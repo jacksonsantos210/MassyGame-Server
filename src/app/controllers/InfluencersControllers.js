@@ -1,6 +1,9 @@
 const Logger = require("../utils/logger");
 const Influencer = require("../models/Influencer");
+const InfluencersToken = require("../models/InfluencersToken");
 const InfluencerSchema = require("../yup/InfluencerSchema");
+
+const LIMIT = 10;
 
 class InfluencersController {
   async index(req, res) {
@@ -19,10 +22,35 @@ class InfluencersController {
 
   async show(req, res) {
     try {
+      let { id } = req.params.id;
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
       const influencer = await Influencer.findOne({
-        where: { id: req.params.id },
+        where: { id: id },
       });
-      res.status(200).json({ influencer: influencer });
+      const { count: size, rows: tokens } =
+        await InfluencersToken.findAndCountAll({
+          where: { influencer_id: id },
+          /* include: {
+          model: Figure,
+          as: "figure",
+          attributes: { exclude: ["image"] },
+        }, */
+          limit: LIMIT,
+          offset: page * LIMIT,
+        });
+
+      let pages = Math.ceil(size / LIMIT);
+
+      res.status(200).json({
+        influencer: influencer,
+        tokens: {
+          size,
+          pages,
+          actual: page + 1,
+          data: tokens,
+        },
+      });
     } catch (error) {
       Logger.game("error", "InfluencersController.show -> ERROR: " + error);
       res.status(500).json({
