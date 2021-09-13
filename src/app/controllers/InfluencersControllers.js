@@ -22,15 +22,15 @@ class InfluencersController {
 
   async show(req, res) {
     try {
-      let { id } = req.params.id;
+      const influencer_id = req.params.id;
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const influencer = await Influencer.findOne({
-        where: { id: id },
+        where: { id: influencer_id },
       });
       const { count: size, rows: tokens } =
         await InfluencersToken.findAndCountAll({
-          where: { influencer_id: id },
+          where: { influencer_id: influencer_id },
           /* include: {
           model: Figure,
           as: "figure",
