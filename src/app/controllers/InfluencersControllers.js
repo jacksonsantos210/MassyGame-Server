@@ -1,4 +1,5 @@
 const Logger = require("../utils/logger");
+const Player = require("../models/Player");
 const Influencer = require("../models/Influencer");
 const InfluencersToken = require("../models/InfluencersToken");
 const InfluencerSchema = require("../yup/InfluencerSchema");
@@ -31,11 +32,11 @@ class InfluencersController {
       const { count: size, rows: tokens } =
         await InfluencersToken.findAndCountAll({
           where: { influencer_id: influencer_id },
-          /* include: {
-          model: Figure,
-          as: "figure",
-          attributes: { exclude: ["image"] },
-        }, */
+          include: {
+            model: Player,
+            as: "player",
+            attributes: { exclude: ["password"] },
+          },
           limit: LIMIT,
           offset: page * LIMIT,
         });
