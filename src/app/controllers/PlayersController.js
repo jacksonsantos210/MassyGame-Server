@@ -11,14 +11,26 @@ const Stand = require("../models/Stand");
 
 const Queue = require("../../lib/Queue");
 
+const LIMIT = 10;
+
 class PlayersController {
   async index(req, res) {
     try {
-      const players = await Player.findAndCountAll({
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
+      const { count: size, rows: players } = await Player.findAndCountAll({
+        limit: LIMIT,
+        offset: page * LIMIT,
         attributes: { exclude: ["password"] },
       });
+      pages = Math.ceil(size / LIMIT);
       return res.status(200).json({
-        players: players,
+        players: {
+          size,
+          pages,
+          actual: page + 1,
+          data: players,
+        },
       });
     } catch (error) {
       Logger.game("error", "PlayersController.index -> ERROR: " + error);
