@@ -23,11 +23,11 @@ class PlayersController {
         offset: page * LIMIT,
         attributes: { exclude: ["password"] },
       });
-      pages = Math.ceil(size / LIMIT);
+      let pages = Math.ceil(size / LIMIT);
       return res.status(200).json({
         players: {
-          size,
-          pages,
+          size: size,
+          pages: pages,
           actual: page + 1,
           data: players,
         },
