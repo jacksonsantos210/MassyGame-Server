@@ -9,6 +9,6 @@ routes.get(`${prefix}/show/:token`, Midleware, Controller.show);
 routes.get(`${prefix}/useds`, Midleware, Controller.useds);
 routes.post(`${prefix}/insert`, Midleware, Controller.store);
 routes.post(`${prefix}/rescue`, Midleware, Controller.update);
-/* routes.get(`${prefix}/influencer/{id}`, Midleware, Controller.byInfluencer); */
+routes.post(`${prefix}/delete/:id`, Midleware, Controller.delete);
 
 module.exports = InfluencersTokensRoutes;
