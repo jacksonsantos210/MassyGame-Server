@@ -77,6 +77,29 @@ class AdminsController {
       });
     }
   }
+
+  async changePassword(req, res) {
+    try {
+      await Admin.update(
+        { password: bcrypt.hash(req.body.password, 10) },
+        {
+          where: { id: req.body.user_id },
+        }
+      );
+      if (req.body.origin === "recovery") {
+        await PlayersToken.destroy({
+          where: { player_id: req.body.player_id },
+        });
+      }
+      return res.status(200).json({ message: "OK" });
+    } catch (error) {
+      Logger.game("error", "AdminsController.changePassword -> ERROR: " + error);
+      return res.status(400).json({
+        message: "Erro ao tentar atualizar senha",
+      });
+    }
+  }
+}
 }
 
 module.exports = new AdminsController();
