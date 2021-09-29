@@ -163,6 +163,27 @@ class InfluencersTokensController {
       });
     }
   }
+
+  async delete(req, res) {
+    try {
+      const token = await InfluencersToken.destroy({
+        where: { id: req.params.id },
+      });
+
+      return res.status(200).json({
+        message: "Dados removidos com sucesso",
+        result: token,
+      });
+    } catch (error) {
+      Logger.game(
+        "error",
+        "InfluencersTokensController.delete -> ERROR: " + error
+      );
+      return res.status(400).json({
+        message: "Erro ao tentar remover token",
+      });
+    }
+  }
 }
 
 module.exports = new InfluencersTokensController();
