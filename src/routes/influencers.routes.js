@@ -7,4 +7,5 @@ routes.get("/influencers", Midleware, Controller.index);
 routes.post("/influencers/insert", Midleware, Controller.store);
 routes.get("/influencers/show/:id", Midleware, Controller.show);
 routes.post("/influencers/update/:id", Midleware, Controller.update);
+routes.post("/influencers/delete/:id", Midleware, Controller.delete);
 module.exports = InfluencersRoutes;
