@@ -102,6 +102,24 @@ class InfluencersController {
       });
     }
   }
+
+  async delete(req, res) {
+    try {
+      const influencer = await Influencer.destroy({
+        where: { id: req.params.id },
+      });
+
+      return res.status(200).json({
+        message: "Dados removidos com sucesso",
+        result: influencer,
+      });
+    } catch (error) {
+      Logger.game("error", "InfluencersController.delete -> ERROR: " + error);
+      return res.status(400).json({
+        message: "Erro ao tentar remover influencer",
+      });
+    }
+  }
 }
 
 module.exports = new InfluencersController();
