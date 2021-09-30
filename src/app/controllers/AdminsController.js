@@ -80,8 +80,15 @@ class AdminsController {
 
   async changePassword(req, res) {
     try {
+      const { password } = req.body;
+      if (!password || password.length <= 5) {
+        return res.status(400).json({
+          message: "Senha não enviada",
+        });
+      }
+      let newPassword = await bcrypt.hash(password, 10);
       await Admin.update(
-        { password: bcrypt.hash(req.body.password, 10) },
+        { password: newPassword },
         {
           where: { id: req.user_id },
         }
@@ -93,11 +100,11 @@ class AdminsController {
       } */
       return res.status(200).json({ message: "OK" });
     } catch (error) {
-      Logger.game(
+      Logger.admin(
         "error",
         "AdminsController.changePassword -> ERROR: " + error
       );
-      return res.status(400).json({
+      return res.status(500).json({
         message: "Erro ao tentar atualizar senha",
       });
     }
