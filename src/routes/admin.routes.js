@@ -7,4 +7,5 @@ routes.get("/admins", Midleware, Controller.index);
 routes.get("/admins/show/:id", Midleware, Controller.show);
 routes.post("/admins/create", Controller.store); //Função Pública de Registro
 routes.post("/admins/update", Midleware, Controller.update);
+routes.post("/admins/change-password", Midleware, Controller.changePassword);
 module.exports = AdminRoutes;
