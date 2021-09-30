@@ -65,7 +65,9 @@ class AdminsController {
           message: "Dados inválidos",
         });
       }
-      const admin = await Admin.update(req.body);
+      const admin = await Admin.update(req.body, {
+        where: { id: req.user_id },
+      });
       return res.status(201).json({
         message: "Figurinha salva com sucesso",
         admin: admin,
