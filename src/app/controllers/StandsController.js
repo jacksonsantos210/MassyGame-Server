@@ -73,9 +73,7 @@ class StandsController {
 
   async findByPlayer(req, res) {
     try {
-      let { page = 1, type, name = null } = req.query;
-      /*    let { type } = req.query;
-      let { name = null } = req.query; */
+      let { page = 1, type, id = null } = req.query;
       page = parseInt(page - 1);
       let where1,
         where2 = {};
@@ -84,16 +82,14 @@ class StandsController {
           "$figure.type_id$": parseInt(type),
         };
       }
-      if (name !== null && name.length > 0) {
+      if (id !== null && id.length > 0) {
         where2 = {
-          "$figure.name$": { [Op.like]: `%${name}%` },
+          "$figure.id$": id,
         };
       }
-      console.log(req.query);
 
       const { count: size, rows: stands } = await Stand.findAndCountAll({
         where: [{ sold: false }, where1, where2],
-        //include: { association: "figure" },
         include: {
           model: Figure,
           as: "figure",
@@ -102,7 +98,6 @@ class StandsController {
         limit: LIMIT,
         offset: page * LIMIT,
       });
-
       let pages = Math.ceil(size / LIMIT);
       const hand = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
