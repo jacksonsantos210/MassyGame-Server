@@ -2,6 +2,8 @@ const Logger = require("../utils/logger");
 const Album = require("../models/Album");
 const AlbumSchema = require("../yup/AlbumSchema");
 const Player = require("../models/Player");
+const { truncate } = require("fs");
+const { array } = require("yup/lib/locale");
 
 class AlbumsController {
   async index(req, res) {
@@ -62,11 +64,31 @@ class AlbumsController {
 
   async historic(req, res) {
     try {
-      const albums = await Album.findAll({
+      const global = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
       });
+
+      var a = [];
+      await global.forEach(async (item) => {
+        var vAlbum = await Album.findOne({
+          where: [
+            { player_id: req.user_id },
+            { figure_id: item.figure_id },
+            { pasted: true },
+          ],
+        });
+
+        var b = {
+          id: item.id,
+          player_id: item.player_id,
+          figure_id: item.figure_id,
+          pasted: vAlbum ? true : false,
+        };
+        a.push(b);
+      });
+      console.log(a);
       return res.status(200).json({
-        albums: albums,
+        albums: a,
       });
     } catch (error) {
       Logger.game("error", "AlbumsController.historic -> ERROR: " + error);
