@@ -24,4 +24,4 @@ class InfluencersTokensUsed extends Model {
   } */
 }
 
-module.exports = InfluencersToken;
+module.exports = InfluencersTokensUsed;
