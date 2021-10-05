@@ -5,11 +5,9 @@ class InfluencersToken extends Model {
     super.init(
       {
         influencer_id: DataTypes.INTEGER,
-        player_id: DataTypes.INTEGER,
         token: DataTypes.STRING,
-        opened: DataTypes.BOOLEAN,
+        opened: DataTypes.INTEGER,
         figure_id: DataTypes.INTEGER,
-        opened_at: DataTypes.DATE,
       },
       {
         sequelize,
@@ -17,14 +15,14 @@ class InfluencersToken extends Model {
     );
   }
 
-  static associate(models) {
+  /*  static associate(models) {
     this.belongsTo(models.Influencer, {
       foreingKey: "infulencer_id",
       as: "influencer",
     });
-    this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
+    this.belongsTo(models., { foreingKey: "player_id", as: "player" });
     this.belongsTo(models.Figure, { foreingKey: "figure_id", as: "figure" });
-  }
+  } */
 }
 
 module.exports = InfluencersToken;
