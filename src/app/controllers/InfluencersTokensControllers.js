@@ -1,7 +1,7 @@
 const moment = require("moment");
 const Logger = require("../utils/logger");
 const InfluencersToken = require("../models/InfluencersToken");
-const InfluencersTokenUsed = require("../model/InfluencersTokensUsed");
+const InfluencersTokensUsed = require("../model/InfluencersTokensUsed");
 const Figure = require("../models/Figure");
 const Player = require("../models/Player");
 const InfluencersTokensSchema = require("../yup/InfluencersTokensSchema");
@@ -45,7 +45,7 @@ class InfluencersTokensController {
 
   async useds(req, res) {
     try {
-      const tokens = await InfluencersTokenUsed.findAll();
+      const tokens = await InfluencersTokensUsed.findAll();
       res.status(200).json({ tokens: tokens });
     } catch (error) {
       Logger.game(
@@ -129,7 +129,7 @@ class InfluencersTokensController {
           }
         );
 
-        await InfluencersTokenUsed.create({
+        await InfluencersTokensUsed.create({
           token_id: data.id,
           player_id: req.user_id,
           opened_at: moment().format("YYYY-MM-DD"),
