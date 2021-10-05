@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-class InfluencersToken extends Model {
+class InfluencersTokensUsed extends Model {
   static init(sequelize) {
     super.init(
       {
