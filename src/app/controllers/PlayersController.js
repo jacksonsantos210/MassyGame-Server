@@ -5,6 +5,7 @@ const Logger = require("../utils/logger");
 const config = require("../../config/auth");
 const PlayerSchema = require("../yup/PlayerSchema");
 const Player = require("../models/Player");
+const PlayersSession = require("../models/PlayersSession");
 const PlayersToken = require("../models/PlayersToken");
 const Premier = require("../models/Premier");
 const Stand = require("../models/Stand");
@@ -30,6 +31,35 @@ class PlayersController {
           pages: pages,
           actual: page + 1,
           data: players,
+        },
+      });
+    } catch (error) {
+      Logger.game("error", "PlayersController.index -> ERROR: " + error);
+      return res.status(400).json({
+        message: "Erro ao tentar listar jogadores",
+      });
+    }
+  }
+
+  async inGame(req, res) {
+    try {
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
+      const { count: size, rows: sessions } =
+        await PlayersSession.findAndCountAll({
+          where: {
+            logged: true,
+          },
+          limit: LIMIT,
+          offset: page * LIMIT,
+        });
+      let pages = Math.ceil(size / LIMIT);
+      return res.status(200).json({
+        players: {
+          size: size,
+          pages: pages,
+          actual: page + 1,
+          data: sessions,
         },
       });
     } catch (error) {
