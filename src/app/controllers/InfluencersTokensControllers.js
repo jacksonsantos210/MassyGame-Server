@@ -1,11 +1,9 @@
-const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const Logger = require("../utils/logger");
-const Influencer = require("../models/Influencer");
 const InfluencersToken = require("../models/InfluencersToken");
+const InfluencersTokenUsed = require("../model/InfluencersTokenUsed");
 const Figure = require("../models/Figure");
 const Player = require("../models/Player");
-const Album = require("../models/Album");
 const InfluencersTokensSchema = require("../yup/InfluencersTokensSchema");
 
 class InfluencersTokensController {
@@ -47,9 +45,7 @@ class InfluencersTokensController {
 
   async useds(req, res) {
     try {
-      const tokens = await InfluencersToken.findAll({
-        where: { opened: true },
-      });
+      const tokens = await InfluencersTokenUsed.findAll();
       res.status(200).json({ tokens: tokens });
     } catch (error) {
       Logger.game(
@@ -64,11 +60,6 @@ class InfluencersTokensController {
 
   async store(req, res) {
     try {
-      if (!(await InfluencersTokensSchema)) {
-        return res.status(400).json({
-          message: "Dados inválidos",
-        });
-      }
       let tk = Math.random(100)
         .toString(16)
         .replace("/[^A-Z]+/G", "")
@@ -91,10 +82,10 @@ class InfluencersTokensController {
         items.push(itm);
       });
       let figure = items[Math.floor(Math.random() * (items.length - 0) + 0)];
-      const token = await InfluencersToken.create({
+      await InfluencersToken.create({
         influencer_id: req.body.influencer_id,
         token: tk,
-        opened: false,
+        opened: 0,
         figure_id: figure.id,
       });
       return res.status(200).json({
@@ -121,24 +112,28 @@ class InfluencersTokensController {
         });
       } else {
         const data = await InfluencersToken.findOne({
-          where: [{ token: token }, { opened: false }],
+          where: { token: token },
         });
-        if (data === null) {
+        if (data === null || data.opened >= 1000) {
           return res.status(400).json({
-            message: "Token já utilizado",
+            message: "Limite de uso excedido",
           });
         }
-
+        let newOpened = data.opened + 1;
         await InfluencersToken.update(
           {
-            player_id: req.user_id,
-            opened: true,
-            opened_at: moment().format("YYYY-MM-DD"),
+            opened: newOpened,
           },
           {
-            where: { token: token },
+            where: { id: data.id },
           }
         );
+
+        await InfluencersTokenUsed.create({
+          token_id: data.id,
+          player_id: req.user_id,
+          opened_at: moment().format("YYYY-MM-DD"),
+        });
         const player = await Player.findByPk(req.user_id);
         const { coin } = await Figure.findOne({
           where: { id: data.figure_id },
