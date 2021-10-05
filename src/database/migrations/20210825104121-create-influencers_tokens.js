@@ -16,22 +16,15 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      player_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: { model: "players", key: "id" },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
-      },
       token: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
       opened: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        dafaultValue: false,
+        dafaultValue: 0,
       },
       figure_id: {
         type: Sequelize.INTEGER,
@@ -39,10 +32,6 @@ module.exports = {
         references: { model: "figures", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
-      },
-      opened_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
