@@ -6,7 +6,6 @@ class InfluencersTokensUsed extends Model {
       {
         token_id: DataTypes.INTEGER,
         player_id: DataTypes.INTEGER,
-        opened: DataTypes.BOOLEAN,
         opened_at: DataTypes.DATE,
       },
       {
