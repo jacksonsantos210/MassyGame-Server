@@ -125,13 +125,13 @@ class AlbumsController {
     try {
       const album = await Album.findOne({ where: { id: req.body.album_id } });
       if (album.repeted === true) {
-        return res.status(200).json({
+        return res.status(400).json({
           message: "Você já havia colado esta figura",
         });
       }
       await Album.update(
-        { pasted: true },
-        { where: { id: req.body.album_id } }
+        { pasted: true, repeted: true },
+        { where: { id: album.id } }
       );
       await Album.update(
         { repeted: true },
