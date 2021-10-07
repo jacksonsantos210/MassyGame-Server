@@ -44,11 +44,18 @@ class InfluencersController {
       const { count: size, rows: tokens } =
         await InfluencersUsed.findAndCountAll({
           where: { influencer_id: influencer_id },
-          include: {
-            model: Player,
-            as: "player",
-            attributes: { exclude: ["password"] },
-          },
+          include: [
+            {
+              model: Player,
+              as: "player",
+              attributes: { exclude: ["password"] },
+            },
+            {
+              model: Figure,
+              as: "figure",
+              attributes: { exclude: ["image"] },
+            },
+          ],
           limit: LIMIT,
           offset: page * LIMIT,
         });
