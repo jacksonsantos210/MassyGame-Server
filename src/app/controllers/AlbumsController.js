@@ -124,6 +124,7 @@ class AlbumsController {
   async paste(req, res) {
     try {
       const album = await Album.findOne({ where: { id: req.body.album_id } });
+
       if (album.repeted === true) {
         return res.status(400).json({
           message: "Você já havia colado esta figura",
