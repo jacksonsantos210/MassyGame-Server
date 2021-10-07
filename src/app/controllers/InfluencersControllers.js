@@ -1,5 +1,6 @@
 const Logger = require("../utils/logger");
 const Player = require("../models/Player");
+const Figure = require("../models/Figure");
 const Influencer = require("../models/Influencer");
 const InfluencersUsed = require("../models/InfluencersUsed");
 const InfluencerSchema = require("../yup/InfluencerSchema");
