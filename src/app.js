@@ -10,7 +10,7 @@ const Albums = require("./routes/albums.routes");
 const Admins = require("./routes/admin.routes");
 const Auth = require("./routes/auth.routes");
 const Influencers = require("./routes/influencers.routes");
-const InfluencersTokens = require("./routes/influencers-tokens.routes");
+const InfluencersUseds = require("./routes/influencers-useds.routes");
 const FiguresTypes = require("./routes/figures-types.routes");
 const Figures = require("./routes/figures.routes");
 const Players = require("./routes/player.routes");
@@ -42,7 +42,7 @@ class App {
     this.app.use(Admins);
     this.app.use(Auth);
     this.app.use(Influencers);
-    this.app.use(InfluencersTokens);
+    this.app.use(InfluencersUseds);
     this.app.use(FiguresTypes);
     this.app.use(Figures);
     this.app.use(Players);

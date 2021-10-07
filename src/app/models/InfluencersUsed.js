@@ -1,12 +1,12 @@
 const { Model, DataTypes } = require("sequelize");
 
-class InfluencersToken extends Model {
+class InfluencersUsed extends Model {
   static init(sequelize) {
     super.init(
       {
         influencer_id: DataTypes.INTEGER,
-        token: DataTypes.STRING,
-        opened: DataTypes.INTEGER,
+        player_id: DataTypes.INTEGER,
+        opened_at: DataTypes.DATE,
         figure_id: DataTypes.INTEGER,
       },
       {
@@ -24,4 +24,4 @@ class InfluencersToken extends Model {
   }
 }
 
-module.exports = InfluencersToken;
+module.exports = InfluencersUsed;

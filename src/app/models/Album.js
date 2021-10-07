@@ -7,6 +7,7 @@ class Album extends Model {
         figure_id: DataTypes.INTEGER,
         origin: DataTypes.STRING,
         pasted: DataTypes.BOOLEAN,
+        repeted: DataTypes.BOOLEAN,
         sale: DataTypes.BOOLEAN,
         sale_at: DataTypes.DATE,
       },

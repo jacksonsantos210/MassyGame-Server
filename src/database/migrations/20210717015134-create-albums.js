@@ -34,6 +34,11 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
+      repeted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       sale: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

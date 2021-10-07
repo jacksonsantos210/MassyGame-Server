@@ -14,6 +14,16 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      indications: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        dafaultValue: 0,
+      },
       phone: {
         type: Sequelize.STRING,
         allowNull: true,

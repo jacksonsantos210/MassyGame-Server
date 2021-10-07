@@ -7,6 +7,8 @@ class Influencer extends Model {
         name: DataTypes.STRING,
         phone: DataTypes.STRING,
         email: DataTypes.STRING,
+        token: DataTypes.STRING,
+        indications: DataTypes.INTEGER,
       },
       {
         sequelize,
@@ -15,7 +17,7 @@ class Influencer extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.InfluencersToken, {
+    this.hasMany(models.InfluencersUsed, {
       foreingKey: "influencer_id",
       as: "tokens",
     });

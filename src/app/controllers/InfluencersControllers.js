@@ -1,7 +1,7 @@
 const Logger = require("../utils/logger");
 const Player = require("../models/Player");
 const Influencer = require("../models/Influencer");
-const InfluencersToken = require("../models/InfluencersToken");
+const InfluencersUsed = require("../models/InfluencersUsed");
 const InfluencerSchema = require("../yup/InfluencerSchema");
 
 const LIMIT = 10;
@@ -9,9 +9,21 @@ const LIMIT = 10;
 class InfluencersController {
   async index(req, res) {
     try {
-      const influencers = await Influencer.findAll();
+      let { page = 1 } = req.query;
+      page = parseInt(page - 1);
+      const { count: size, rows: influencers } =
+        await Influencer.findAndCountAll({
+          limit: LIMIT,
+          offset: page * LIMIT,
+        });
+      let pages = Math.ceil(size / LIMIT);
       return res.status(200).json({
-        influencers: influencers,
+        influencers: {
+          size,
+          pages,
+          actual: page + 1,
+          data: influencers ? influencers : null,
+        },
       });
     } catch (error) {
       Logger.game("error", "InfluencersController.index -> ERROR: " + error);
@@ -30,7 +42,7 @@ class InfluencersController {
         where: { id: influencer_id },
       });
       const { count: size, rows: tokens } =
-        await InfluencersToken.findAndCountAll({
+        await InfluencersUsed.findAndCountAll({
           where: { influencer_id: influencer_id },
           include: {
             model: Player,
@@ -49,7 +61,7 @@ class InfluencersController {
           size,
           pages,
           actual: page + 1,
-          data: tokens,
+          data: tokens ? tokens : null,
         },
       });
     } catch (error) {
@@ -67,7 +79,18 @@ class InfluencersController {
           message: "Dados inválidos",
         });
       }
-      const influencer = await Influencer.create(req.body);
+      const { name, phone, email, tag } = req.body;
+      let token = "";
+      tag === null || tag === undefined ? (token = name) : (token = tag);
+      token = token.toUpperCase().replace(/\s/g, "") + "60";
+      console.log(token);
+      const influencer = await Influencer.create({
+        name: name,
+        phone: phone,
+        email: email,
+        token: token,
+        indications: 0,
+      });
       return res.status(200).json({
         message: "Influencer Cadastrado com sucesso",
         influencer: influencer,

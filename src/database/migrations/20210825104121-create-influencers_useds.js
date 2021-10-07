@@ -2,17 +2,17 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("influencers_tokens_useds", {
+    await queryInterface.createTable("influencers_useds", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      token_id: {
+      influencer_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: "influencers_tokens", key: "id" },
+        references: { model: "influencers", key: "id" },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
@@ -26,6 +26,13 @@ module.exports = {
       opened_at: {
         type: Sequelize.DATE,
         allowNull: true,
+      },
+      figure_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "figures", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       created_at: {
         type: Sequelize.DATE,

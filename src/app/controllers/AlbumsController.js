@@ -1,9 +1,7 @@
 const Logger = require("../utils/logger");
 const Album = require("../models/Album");
 const AlbumSchema = require("../yup/AlbumSchema");
-const Player = require("../models/Player");
-const { truncate } = require("fs");
-const { array } = require("yup/lib/locale");
+const Figure = require("../models/Figure");
 
 class AlbumsController {
   async index(req, res) {
@@ -64,31 +62,16 @@ class AlbumsController {
 
   async historic(req, res) {
     try {
-      const global = await Album.findAll({
+      const albums = await Album.findAll({
         where: [{ player_id: req.user_id }, { pasted: false }, { sale: false }],
+        include: {
+          model: Figure,
+          as: "figure",
+          attributes: { exclude: ["image"] },
+        },
       });
-
-      var a = [];
-      await global.forEach(async (item) => {
-        var vAlbum = await Album.findOne({
-          where: [
-            { player_id: req.user_id },
-            { figure_id: item.figure_id },
-            { pasted: true },
-          ],
-        });
-
-        var b = {
-          id: item.id,
-          player_id: item.player_id,
-          figure_id: item.figure_id,
-          pasted: vAlbum ? true : false,
-        };
-        a.push(b);
-      });
-      console.log(a);
       return res.status(200).json({
-        albums: a,
+        albums: albums,
       });
     } catch (error) {
       Logger.game("error", "AlbumsController.historic -> ERROR: " + error);
@@ -140,9 +123,19 @@ class AlbumsController {
 
   async paste(req, res) {
     try {
+      const album = await Album.findOne({ where: { id: req.body.album_id } });
+      if (album.repeted === true) {
+        return res.status(200).json({
+          message: "Você já havia colado esta figura",
+        });
+      }
       await Album.update(
         { pasted: true },
         { where: { id: req.body.album_id } }
+      );
+      await Album.update(
+        { repeted: true },
+        { where: { figure_id: album.figure_id } }
       );
       return res.status(200).json({
         message: "Figurinha colada com sucesso",
