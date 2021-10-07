@@ -33,10 +33,10 @@ class Player extends Model {
       foreingKey: "player_id",
       as: "tokens",
     });
-    /* this.hasMany(models.InfluencersTokensUsed, {
+    this.hasMany(models.InfluencersUsed, {
       foreingKey: "player_id",
       as: "influencers",
-    }); */
+    });
   }
 }
 
