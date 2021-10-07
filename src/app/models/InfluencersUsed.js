@@ -21,6 +21,7 @@ class InfluencersUsed extends Model {
       as: "influencer",
     });
     this.belongsTo(models.Figure, { foreingKey: "figure_id", as: "figure" });
+    this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
   }
 }
 
