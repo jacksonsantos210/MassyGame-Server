@@ -44,6 +44,10 @@ class AuthController {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress ||
         null;
+      await PlayersSession.update(
+        { logged: false },
+        { where: { player_id: player.id } }
+      );
       await PlayersSession.create({
         player_id: player.id,
         token: token,
