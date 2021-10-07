@@ -61,7 +61,7 @@ class InfluencersUsedsController {
       let { page = 1 } = req.query;
       page = parseInt(page - 1);
       const { count: size, rows: vouchers } =
-        await InfluencersUsedsUsed.findAll({
+        await InfluencersUsed.findAndCountAll({
           limit: LIMIT,
           offset: page * LIMIT,
         });
