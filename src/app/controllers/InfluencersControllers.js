@@ -89,8 +89,10 @@ class InfluencersController {
       }
       const { name, phone, email, tag } = req.body;
       let token = "";
-      tag === null || tag === undefined ? (token = name) : (token = tag);
-      token = token.toUpperCase().replace(/\s/g, "") + "60";
+      tag === null || tag === undefined || tag.length === 0
+        ? (token = name)
+        : (token = tag);
+      token = token.toUpperCase().replace(/\s/g, "") + "@60";
       console.log(token);
       const influencer = await Influencer.create({
         name: name,
