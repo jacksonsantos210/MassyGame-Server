@@ -15,7 +15,11 @@ class InfluencersUsedsController {
       page = parseInt(page - 1);
       const { count: size, rows: vouchers } =
         await InfluencersUsed.findAndCountAll({
-          include: { association: "influencer" },
+          include: [
+            { association: "influencer" },
+            { association: "player" },
+            { association: "figure" },
+          ],
           limit: LIMIT,
           offset: page * LIMIT,
         });
