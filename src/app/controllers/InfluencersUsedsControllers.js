@@ -98,13 +98,21 @@ class InfluencersUsedsController {
         },
       });
       if (influencer === null) {
-        return res.status(200).json({
+        return res.status(400).json({
           message: "Voucher inválido",
         });
       }
       if (influencer.indications >= 2000) {
-        return res.status(200).json({
+        return res.status(400).json({
           message: "Que pena, este voucher já foi resgatado muitas vezes",
+        });
+      }
+      const used = await InfluencersUsed.findAll({
+        where: { player_id: req.user_id },
+      });
+      if (used.length > 0) {
+        return res.status(400).json({
+          message: "Oops! Você já utilizou este Código.",
         });
       }
       let items = [];
