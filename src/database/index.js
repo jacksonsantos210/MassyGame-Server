@@ -40,6 +40,7 @@ InfluencersUsed.associate(connection.models);
 FiguresType.associate(connection.models);
 Figure.associate(connection.models);
 Player.associate(connection.models);
+PlayersSession.associate(connection.models);
 PlayersToken.init(connection);
 Stand.associate(connection.models);
 Premier.associate(connection.models);
