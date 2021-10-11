@@ -50,6 +50,12 @@ class PlayersController {
           where: {
             logged: true,
           },
+          attributes: { exclude: ["token"] },
+          include: {
+            model: Player,
+            as: "player",
+            attributes: { exclude: ["password"] },
+          },
           limit: LIMIT,
           offset: page * LIMIT,
         });
