@@ -125,35 +125,36 @@ class AuthController {
     }
   }
 
-  async logout(req, res) {
+  async logoutPlayer(req, res) {
     try {
-      let valid = null;
-      if (req.user_type === "player") {
-        valid = await PlayersSession.update(
-          { logged: false },
-          { where: { player_id: req.user_id } }
-        );
-      } else if (req.user_type === "developer") {
-        valid = await DevelopersSession.update(
-          { logged: false },
-          { where: { admin_id: req.user_id } }
-        );
-      } else if (req.user_type === "admin") {
-        valid = await AdminsSession.update(
-          { logged: false },
-          { where: { developer_id: req.user_id } }
-        );
-      }
+      valid = await PlayersSession.update(
+        { logged: false },
+        { where: { player_id: req.user_id } }
+      );
       return res.status(200).json({
         message: "Logout",
         result: valid,
       });
     } catch (error) {
-      if (req.user_type === "player") {
-        Logger.game("error", "AlbumsController.logout -> ERROR: " + error);
-      } else {
-        Logger.admin("error", "AlbumsController.logout -> ERROR: " + error);
-      }
+      Logger.game("error", "AlbumsController.logoutPLayer -> ERROR: " + error);
+      return res.status(500).json({
+        message: "Ops! Falha ao desconectar",
+      });
+    }
+  }
+
+  async logoutAdmin(req, res) {
+    try {
+      valid = await AdminsSession.update(
+        { logged: false },
+        { where: { developer_id: req.user_id } }
+      );
+      return res.status(200).json({
+        message: "Logout",
+        result: valid,
+      });
+    } catch (error) {
+      Logger.admin("error", "AlbumsController.logoutAdmin -> ERROR: " + error);
       return res.status(500).json({
         message: "Ops! Falha ao desconectar",
       });
