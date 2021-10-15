@@ -72,6 +72,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      gaming: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       password: {
         type: Sequelize.STRING,
         allowNull: false,
