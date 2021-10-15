@@ -6,5 +6,6 @@ const routes = AuthRoutes;
 routes.post("/auth/player", Controller.playerLogIn);
 routes.post("/auth/admin", Controller.adminLogIn);
 //routes.post("/auth/developer", Controller.developerLogIn);
-routes.get("/logout", Midleware, Controller.logout);
+routes.get("/logout", Midleware, Controller.logoutPlayer);
+routes.get("/admin/logout", Midleware, Controller.logoutAdmin);
 module.exports = AuthRoutes;
