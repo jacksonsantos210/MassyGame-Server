@@ -1,3 +1,6 @@
+const moment = require("moment");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Logger = require("../utils/logger");
 const Player = require("../models/Player");
 const PlayersSession = require("../models/PlayersSession");
@@ -5,8 +8,7 @@ const Developer = require("../models/Developer");
 const DevelopersSession = require("../models/DevelopersSession");
 const Admin = require("../models/Admin");
 const AdminSession = require("../models/AdminsSession");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
 const config = require("../../config/auth");
 const AuthSchema = require("../yup/AuthSchema");
 
