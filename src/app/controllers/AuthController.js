@@ -133,30 +133,25 @@ class AuthController {
         { logged: false },
         { where: { player_id: req.user_id } }
       );
-
       const sessions = await PlayersSession.findAll({
         where: { player_id: req.user_id },
       });
-      console.log(sessions);
       var calc = 0;
       sessions.forEach((element) => {
-        console.log("nova linha");
-        let thisMoment = new Date();
-
         var a = moment([
           element.createdAt.getUTCFullYear(),
           element.createdAt.getUTCMonth(),
           element.createdAt.getUTCDay(),
         ]);
         var b = moment([
-          thisMoment.getUTCFullYear(),
-          thisMoment.getUTCMonth(),
-          thisMoment.getUTCDay(),
+          element.updatedAt.getUTCFullYear(),
+          element.updatedAt.getUTCMonth(),
+          element.updatedAt.getUTCDay(),
         ]);
-        let dateDiff = a.diff(b, "hours");
-        console.log(dateDiff);
+        let dateDiff = b.diff(a, "hours");
+        calc = calc + dateDiff;
       });
-
+      await Player.update({ gaming: calc }, { where: { id: req.user_id } });
       return res.status(200).json({
         message: "Logout",
         result: valid,
