@@ -131,6 +131,12 @@ class AuthController {
         { logged: false },
         { where: { player_id: req.user_id } }
       );
+
+      const sessions = await PlayersSession.findAll({
+        where: { player_id: req.user_id },
+      });
+      console.log(sessions);
+
       return res.status(200).json({
         message: "Logout",
         result: valid,
