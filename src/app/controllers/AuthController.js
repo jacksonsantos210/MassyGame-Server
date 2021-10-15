@@ -127,7 +127,7 @@ class AuthController {
 
   async logoutPlayer(req, res) {
     try {
-      valid = await PlayersSession.update(
+      const valid = await PlayersSession.update(
         { logged: false },
         { where: { player_id: req.user_id } }
       );
