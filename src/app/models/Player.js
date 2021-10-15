@@ -18,6 +18,7 @@ class Player extends Model {
         rules_accept: DataTypes.BOOLEAN,
         cash: DataTypes.INTEGER,
         score: DataTypes.INTEGER,
+        gaming: DataTypes.INTEGER,
         password: DataTypes.STRING,
       },
       {
