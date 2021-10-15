@@ -107,6 +107,7 @@ class PlayersController {
         rules_accept: player.rules_accept,
         cash: player.cash,
         score: player.score,
+        gaming: player.gaming,
         premiers: premiers,
         stands: sellers + solds,
         videos: 0,
