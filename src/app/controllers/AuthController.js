@@ -136,6 +136,24 @@ class AuthController {
         where: { player_id: req.user_id },
       });
       console.log(sessions);
+      var calc = 0;
+      sessions.forEach((element) => {
+        console.log("nova linha");
+        let thisMoment = new Date();
+
+        var a = moment([
+          element.createdAt.getUTCFullYear(),
+          element.createdAt.getUTCMonth(),
+          element.createdAt.getUTCDay(),
+        ]);
+        var b = moment([
+          thisMoment.getUTCFullYear(),
+          thisMoment.getUTCMonth(),
+          thisMoment.getUTCDay(),
+        ]);
+        let dateDiff = a.diff(b, "hours");
+        console.log(dateDiff);
+      });
 
       return res.status(200).json({
         message: "Logout",
