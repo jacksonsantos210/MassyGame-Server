@@ -1,4 +1,4 @@
-'const moment = require("moment");
+const moment = require("moment");
 const Logger = require("../utils/logger");
 const InfluencersUsed = require("../models/InfluencersUsed");
 const Figure = require("../models/Figure");
@@ -108,7 +108,7 @@ class InfluencersUsedsController {
         });
       }
       const used = await InfluencersUsed.findAll({
-        where: [{ player_id: req.user_id },{influencer_id: influencer.id}],
+        where: [{ player_id: req.user_id }, { influencer_id: influencer.id }],
       });
       if (used.length > 0) {
         return res.status(400).json({
