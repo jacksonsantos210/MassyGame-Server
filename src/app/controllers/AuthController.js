@@ -58,7 +58,9 @@ class AuthController {
         payload: "",
         logged: true,
       });
-
+      let calc = player.gaming;
+      calc = calc + Math.random() * (31 - 21) + 21;
+      await Player.update({ gaming: calc }, { where: { id: req.user_id } });
       player.password = undefined;
       return res.status(200).json({
         token: token,
@@ -133,10 +135,11 @@ class AuthController {
         { logged: false },
         { where: { player_id: req.user_id } }
       );
+      /* 
       const sessions = await PlayersSession.findAll({
         where: { player_id: req.user_id },
       });
-      var calc = 0;
+       var calc = 0;
       sessions.forEach((element) => {
         var a = moment([
           element.createdAt.getUTCFullYear(),
@@ -151,7 +154,7 @@ class AuthController {
         let dateDiff = b.diff(a, "hours");
         calc = calc + dateDiff;
       });
-      await Player.update({ gaming: calc }, { where: { id: req.user_id } });
+      await Player.update({ gaming: calc }, { where: { id: req.user_id } }); */
       return res.status(200).json({
         message: "Logout",
         result: valid,
