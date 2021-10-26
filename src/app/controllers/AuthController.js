@@ -60,7 +60,7 @@ class AuthController {
       });
       let calc = player.gaming;
       calc = calc + Math.random() * (31 - 21) + 21;
-      await Player.update({ gaming: calc }, { where: { id: req.user_id } });
+      await Player.update({ gaming: calc }, { where: { id: player.id } });
       player.password = undefined;
       return res.status(200).json({
         token: token,
