@@ -30,7 +30,21 @@ module.exports = {
         allowNull: true,
         defaultValue: false,
       },
-      figure_id: {
+      figure1_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "figures", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      figure2_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: "figures", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      figure3_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: "figures", key: "id" },
