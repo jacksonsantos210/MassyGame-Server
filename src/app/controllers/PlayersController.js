@@ -82,9 +82,6 @@ class PlayersController {
         where: { id: req.user_id },
         attributes: { exclude: ["password"] },
       });
-      const { count: premiers } = await Premier.findAndCountAll({
-        where: { player_id: req.user_id, opened: true },
-      });
       const { count: sellers } = await Stand.findAndCountAll({
         where: { seller: req.user_id },
       });
@@ -108,7 +105,6 @@ class PlayersController {
         cash: player.cash,
         score: player.score,
         gaming: player.gaming,
-        premiers: premiers,
         stands: sellers + solds,
         videos: 0,
       });
