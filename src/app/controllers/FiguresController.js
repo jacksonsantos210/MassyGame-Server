@@ -81,17 +81,29 @@ class FiguresController {
       await Player.update({ score: scoreNew }, { where: { id: req.user_id } });
       await Album.create({
         player_id: req.user_id,
-        figure_id: premier.figure_id,
+        figure_id: premier.figure1_id,
+        origin: "premier",
+      });
+      await Album.create({
+        player_id: req.user_id,
+        figure_id: premier.figure2_id,
+        origin: "premier",
+      });
+      await Album.create({
+        player_id: req.user_id,
+        figure_id: premier.figure3_id,
         origin: "premier",
       });
       return res.status(200).json({
-        message: "Figurinha aberta com sucesso",
-        premier: premier.figure_id,
+        message: "Figurinhas abertas com sucesso",
+        premier1: premier.figure1_id,
+        premier1: premier.figure2_id,
+        premier1: premier.figure3_id,
       });
     } catch (error) {
       Logger.game("error", "FiguresController.getPremier -> ERROR: " + error);
       return res.status(500).json({
-        message: "Erro ao libear premio",
+        message: "Erro ao libear prêmio",
       });
     }
   }
@@ -104,7 +116,9 @@ class FiguresController {
         },
       });
       return res.status(200).json({
-        premier: premier.figure_id,
+        premier1: premier.figure1_id,
+        premier2: premier.figure2_id,
+        premier3: premier.figure3_id,
       });
     } catch (error) {
       Logger.game("error", "FiguresController.getPremier -> ERROR: " + error);
@@ -172,12 +186,16 @@ class FiguresController {
             items.push(itm);
           });
         }
-        let { id } = items[Math.floor(Math.random() * (items.length - 0) + 0)];
+        let p1 = items[Math.floor(Math.random() * (items.length - 0) + 0)];
+        let p2 = items[Math.floor(Math.random() * (items.length - 0) + 0)];
+        let p3 = items[Math.floor(Math.random() * (items.length - 0) + 0)];
         await Premier.create({
           date: moment().format("YYYY-MM-DD"),
           player_id: req.user_id,
           hash: hash,
-          figure_id: id,
+          figure1_id: p1.id,
+          figure2_id: p2.id,
+          figure3_id: p3.id,
           opened: false,
         });
         return res.status(200).json({ result: "new", values: hash });
