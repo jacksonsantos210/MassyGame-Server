@@ -7,7 +7,9 @@ class Premier extends Model {
         date: DataTypes.DATEONLY,
         player_id: DataTypes.INTEGER,
         hash: DataTypes.STRING,
-        figure_id: DataTypes.INTEGER,
+        figure1_id: DataTypes.INTEGER,
+        figure2_id: DataTypes.INTEGER,
+        figure3_id: DataTypes.INTEGER,
         opened: DataTypes.BOOLEAN,
       },
       {
@@ -18,7 +20,6 @@ class Premier extends Model {
 
   static associate(models) {
     this.belongsTo(models.Player, { foreingKey: "player_id", as: "player" });
-    this.belongsTo(models.Figure, { foreingKey: "figure_id", as: "figure" });
   }
 }
 
