@@ -136,7 +136,7 @@ class AlbumsController {
       );
       await Album.update(
         { repeted: true },
-        { where: { figure_id: album.figure_id } }
+        { where: [{ figure_id: album.figure_id }, { player_id: req.user_id }] }
       );
       return res.status(200).json({
         message: "Figurinha colada com sucesso",
