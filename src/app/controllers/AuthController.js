@@ -131,33 +131,12 @@ class AuthController {
 
   async logoutPlayer(req, res) {
     try {
-      const valid = await PlayersSession.update(
+      await PlayersSession.update(
         { logged: false },
         { where: { player_id: req.user_id } }
       );
-      /* 
-      const sessions = await PlayersSession.findAll({
-        where: { player_id: req.user_id },
-      });
-       var calc = 0;
-      sessions.forEach((element) => {
-        var a = moment([
-          element.createdAt.getUTCFullYear(),
-          element.createdAt.getUTCMonth(),
-          element.createdAt.getUTCDay(),
-        ]);
-        var b = moment([
-          element.updatedAt.getUTCFullYear(),
-          element.updatedAt.getUTCMonth(),
-          element.updatedAt.getUTCDay(),
-        ]);
-        let dateDiff = b.diff(a, "hours");
-        calc = calc + dateDiff;
-      });
-      await Player.update({ gaming: calc }, { where: { id: req.user_id } }); */
       return res.status(200).json({
         message: "Logout",
-        result: valid,
       });
     } catch (error) {
       Logger.game("error", "AlbumsController.logoutPLayer -> ERROR: " + error);
