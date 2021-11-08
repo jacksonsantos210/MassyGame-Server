@@ -124,15 +124,21 @@ class AlbumsController {
   async paste(req, res) {
     try {
       const album = await Album.findOne({ where: { id: req.body.album_id } });
-
-      if (album.repeted === true) {
+      const reviews = await Album.findAll({
+        where: [
+          { figure_id: album.figure_id },
+          { player_id: req.user_id },
+          { repeted: 1 },
+        ],
+      });
+      if (reviews.length > 0) {
         return res.status(400).json({
-          message: "Você já havia colado esta figura",
+          message: "Você já havia colado esta figura anteriormente",
         });
       }
       await Album.update(
         { pasted: true, repeted: true },
-        { where: { id: album.id } }
+        { where: { id: req.body.album_id } }
       );
       await Album.update(
         { repeted: true },
