@@ -7,7 +7,7 @@ const Player = require("../models/Player");
 const Album = require("../models/Album");
 const FigureSchema = require("../yup/FigureSchema");
 
-const DATE_TOP_PREMIERS = new Date("2021-10-15");
+const DATE_TOP_PREMIERS = new Date("2021-12-27");
 
 class FiguresController {
   async index(req, res) {
