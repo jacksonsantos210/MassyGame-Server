@@ -74,10 +74,20 @@ class FiguresController {
       }
       await Premier.update({ opened: true }, { where: { id: premier.id } });
       const player = await Player.findByPk(req.user_id);
-      const { coin } = await Figure.findOne({
-        where: { id: premier.figure_id },
+
+      const { coin: coin1 } = await Figure.findOne({
+        where: { id: premier.figure1_id },
       });
-      let scoreNew = player.score + coin;
+
+      const { coin: coin2 } = await Figure.findOne({
+        where: { id: premier.figure2_id },
+      });
+
+      const { coin: coin3 } = await Figure.findOne({
+        where: { id: premier.figure3_id },
+      });
+
+      let scoreNew = player.score + coin1 + coin2 + coin3;
       await Player.update({ score: scoreNew }, { where: { id: req.user_id } });
       await Album.create({
         player_id: req.user_id,
@@ -101,7 +111,7 @@ class FiguresController {
         premier1: premier.figure3_id,
       });
     } catch (error) {
-      Logger.game("error", "FiguresController.getPremier -> ERROR: " + error);
+      Logger.game("error", "FiguresController.openPremier -> ERROR: " + error);
       return res.status(500).json({
         message: "Erro ao libear prêmio",
       });
